@@ -15,19 +15,27 @@ class Scroller(pygame.surface.Surface):
         self.bg = bg
 
     def update_blocks_snappoints(self):
-        self.blocks = [ i for i in self.blocks if i!=[]][:]
+        up = []
         for i in range(len(self.blocks)):
+            if self.blocks[i]==[]:
+                continue
             if 'side' in self.blocks[i][0].snappoints:
-                if not isinstance(self.blocks[i][-1],SNAP_Block):
-                    self.blocks[i].append(SNAP_Block(0,0,0))
-        if not isinstance(self.blocks[-1][0],SNAP_Block):
-            self.blocks.append([SNAP_Block(0,0,0)])
+                line = []
+                for j in self.blocks[i]:
+                    if not isinstance(j,SNAP_Block):
+                        line.append(j)
+                line.append(SNAP_Block(0,0,0))
+                up.append(line)
+            elif not isinstance(self.blocks[i][0],SNAP_Block):
+                up.append([self.blocks[i][0],SNAP_Block(0,0,0)])
+        up.append([SNAP_Block(0,0,0)])
+        self.blocks = up
 
 
     def draw(self,window):
         self.blit(self.bg,(0,0))
         self.update_blocks_snappoints()
-        self.blocks[0][0].draw(window)
+        self.blocks[0][0].draw(self)
         cursorx,cursory = self.blocks[0][0].x, self.blocks[0][0].y+self.blocks[0][0].height+y_spacing
         cursorx_ini = cursorx
         for line in self.blocks[1:]:
@@ -40,7 +48,7 @@ class Scroller(pygame.surface.Surface):
                 if block.height > max_y_size:
                     max_y_size = block.height
             cursorx = cursorx_ini
-            cursory += max_y_size
+            cursory += max_y_size + y_spacing
         window.blit(self,(self.x,self.yoffset-self.scroll_y))
     
     def scroll(self,amount):
@@ -70,6 +78,12 @@ class Scroller(pygame.surface.Surface):
 
     def get_hitbox(self):
         return self.get_rect().move(self.x,self.yoffset-self.scroll_y)
+
+    def replace(self,target, item):
+        for i in range(len(self.blocks)):
+            for j in range(len(self.blocks[i])):
+                if self.blocks[i][j]==target:
+                    self.blocks[i][j] = item
 
 class Block():
     def __init__(self,image,xpos,ypos,id):

@@ -12,7 +12,7 @@ bg2 = pygame.image.load(BG_generic_path).convert()
 bg = pygame.transform.scale(bg,(screen_width,screen_height))
 
 scroll_win = Scroller((300,screen_height*2),screen_width-300,0,bg2)
-scroll_win.blocks.append([START_Block(100,100,0)])
+scroll_win.blocks.append([START_Block(20,20,0)])
 
 #scroll_win.blocks.append(IF_Block(100,100,0))
 
@@ -71,11 +71,15 @@ while run:
                 for block in blocks:
                     if block.clicked:
                         block.clicked = False
-                        if block.snapped:
-                            blocks.remove(block)
-                            scroll_win.blocks.append([block])
-                            block.write_pos(add_tuple(scroll_win.global_coord_to_local(pos),(-block.width//2,-block.height//2)))
-                        else:
+                        target_not_found = True
+                        for line in scroll_win.blocks:
+                            for snap in line:
+                                if isinstance(snap,SNAP_Block) and snap.rect.collidepoint(scroll_win.global_coord_to_local(pos)):
+                                    scroll_win.replace(snap,block)
+                                    blocks.remove(block)
+                                    block.write_pos(add_tuple(scroll_win.global_coord_to_local(pos),(-block.width//2,-block.height//2)))
+                                    target_not_found = False
+                        if target_not_found:
                             blocks.remove(block)
     for block in blocks:
         if block.clicked:
