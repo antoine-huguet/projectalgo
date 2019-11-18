@@ -4,6 +4,9 @@ from constantes import *
 from classes import *
 
 win = pygame.display.set_mode((screen_width,screen_height))
+
+
+
 bg = pygame.image.load(BG_generic_path).convert()
 bg2 = pygame.image.load(BG_generic_path).convert()
 bg = pygame.transform.scale(bg,(screen_width,screen_height))
@@ -63,7 +66,6 @@ while run:
             elif event.button == 4: scroll_win.scroll(10)
             elif event.button == 5: scroll_win.scroll(-10)
         elif event.type == MOUSEBUTTONUP:
-
             if event.button == 1 and is_draging:
                 is_draging=False
                 for block in blocks:
