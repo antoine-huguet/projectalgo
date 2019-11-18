@@ -9,7 +9,7 @@ bg2 = pygame.image.load(BG_generic_path).convert()
 bg = pygame.transform.scale(bg,(screen_width,screen_height))
 
 scroll_win = Scroller((300,screen_height*2),screen_width-300,0,bg2)
-scroll_win.blocks.append(START_Block(100,100,0))
+scroll_win.blocks.append([START_Block(100,100,0)])
 
 #scroll_win.blocks.append(IF_Block(100,100,0))
 
@@ -37,21 +37,21 @@ def add_tuple(a,b):
 while run:
     for event in pygame.event.get():
         pos = pygame.mouse.get_pos()
-        
+        print(scroll_win.blocks)
         if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
             run = False
         elif event.type == MOUSEBUTTONDOWN:
-            print(blocks)
             if event.button == 1:
                 if scroll_win.get_hitbox().collidepoint(pos):
-                    for block in scroll_win.blocks:
-                        if block.rect.collidepoint(scroll_win.global_coord_to_local(pos)) and block.is_movable:
-                            print("block clicked inside scroll windows")
-                            block.clicked = True
-                            is_draging = True
-                            scroll_win.blocks.remove(block)
-                            blocks.append(block)
-                            block.write_pos(add_tuple(scroll_win.local_coord_to_global(pos),(block.width//2,block.height//2)))
+                    for line in scroll_win.blocks:
+                        for block in line:
+                            if block.rect.collidepoint(scroll_win.global_coord_to_local(pos)) and block.is_movable:
+                                print("block clicked inside scroll windows")
+                                block.clicked = True
+                                is_draging = True
+                                scroll_win.remove(block)
+                                blocks.append(block)
+                                block.write_pos(add_tuple(scroll_win.local_coord_to_global(pos),(block.width//2,block.height//2)))
                 else:
                     for block in blocks:
                         if block.rect.collidepoint(pos):
@@ -63,7 +63,7 @@ while run:
             elif event.button == 4: scroll_win.scroll(10)
             elif event.button == 5: scroll_win.scroll(-10)
         elif event.type == MOUSEBUTTONUP:
-            print(blocks)
+
             if event.button == 1 and is_draging:
                 is_draging=False
                 for block in blocks:
@@ -71,8 +71,8 @@ while run:
                         block.clicked = False
                         if block.snapped:
                             blocks.remove(block)
-                            scroll_win.blocks.append(block)
-                            scroll_win.blocks[-1].write_pos(add_tuple(scroll_win.global_coord_to_local(pos),(-block.width//2,-block.height//2)))
+                            scroll_win.blocks.append([block])
+                            block.write_pos(add_tuple(scroll_win.global_coord_to_local(pos),(-block.width//2,-block.height//2)))
                         else:
                             blocks.remove(block)
     for block in blocks:
