@@ -13,6 +13,7 @@ import classes
 
 #Create main window
 win = pygame.display.set_mode((screen_width,screen_height))
+pygame.display.set_caption('Game')
 
 #Load backgrounds for the main window and scroller
 bg = pygame.image.load(BG_generic_path).convert()
@@ -21,7 +22,7 @@ bg = pygame.transform.scale(bg,(screen_width,screen_height))
 
 #Create scroller and initialising it with a START block
 scroll_win = classes.Scroller((300,screen_height*2),screen_width-300,0,bg2)
-scroll_win.blocks.append([classes.START_Block(20,20,0)])
+scroll_win.blocks.append([classes.START_Block(20,20)])
 
 #Initialising a variable to track whether a block is being dragged or not
 global is_draging 
@@ -37,7 +38,7 @@ run = True
 blocks = []
 
 #Placing a test origin IF_block
-origin = classes.IF_Block(100,100,0)
+origin = classes.IF_Block(100,100)
 blocks.append(origin)
 
 
@@ -150,7 +151,7 @@ while run:
     #Updating the position of dragged blocks
 
     if len(blocks)==0:
-        new = classes.IF_Block(100,100,0)
+        new = classes.IF_Block(100,100)
         blocks.append(new)
     #Adding a new IF_Block if there are none in main, for test purposes
 

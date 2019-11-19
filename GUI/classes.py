@@ -31,13 +31,13 @@ class Scroller(pygame.surface.Surface):
                 for j in self.blocks[i]:
                     if not isinstance(j,SNAP_Block):
                         line.append(j)
-                line.append(SNAP_Block(0,0,0))
+                line.append(SNAP_Block(0,0))
                 up.append(line)
                 # Only save non snap blocks in the row and if necessary adds one at the end
             elif not isinstance(self.blocks[i][0],SNAP_Block):
-                up.append([self.blocks[i][0],SNAP_Block(0,0,0)])
+                up.append([self.blocks[i][0],SNAP_Block(0,0)])
             # If the block does not take side blocks, it is appened
-        up.append([SNAP_Block(0,0,0)])
+        up.append([SNAP_Block(0,0)])
         # Adds a snap point below the last block
         self.blocks = up
 
@@ -117,7 +117,7 @@ class Scroller(pygame.surface.Surface):
                     self.blocks[i][j] = item
 
 class Block():
-    def __init__(self,image,xpos,ypos,id):
+    def __init__(self,image,xpos,ypos):
         self.image = image # Visual appearance 
         self.clicked = False
         self.rect = self.image.get_rect()
@@ -126,7 +126,6 @@ class Block():
         self.y = ypos
         self.x = xpos
         # X and Y position of the block
-        self.id = id
         self.snappoints = []
         # List of all snappoints the block has
         self.is_movable = True
@@ -145,17 +144,17 @@ class Block():
 
 
 class IF_Block(Block):
-    def __init__(self,xpos,ypos,id):
-        super().__init__(pygame.transform.scale(pygame.image.load(cst.IF_path).convert_alpha(),(100,50)),xpos,ypos,id)
+    def __init__(self,xpos,ypos):
+        super().__init__(pygame.transform.scale(pygame.image.load(cst.IF_path).convert_alpha(),(100,50)),xpos,ypos)
         self.snappoints=['below','side']
 
 class SNAP_Block(Block):
-    def __init__(self,xpos,ypos,id):
-        super().__init__(pygame.transform.scale(pygame.image.load(cst.IF_SNAP_path).convert_alpha(),(100,50)),xpos,ypos,id)
+    def __init__(self,xpos,ypos):
+        super().__init__(pygame.transform.scale(pygame.image.load(cst.IF_SNAP_path).convert_alpha(),(100,50)),xpos,ypos)
         self.is_movable = False
     
 class START_Block(Block):
-    def __init__(self,xpos,ypos,id):
-        super().__init__(pygame.transform.scale(pygame.image.load(cst.START_path).convert_alpha(),(100,50)),xpos,ypos,id)
+    def __init__(self,xpos,ypos):
+        super().__init__(pygame.transform.scale(pygame.image.load(cst.START_path).convert_alpha(),(100,50)),xpos,ypos)
         self.is_movable = False
         self.snappoints = ['below']
