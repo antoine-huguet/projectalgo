@@ -8,8 +8,9 @@
 
 import pygame
 import pygame.locals as cst
-from constantes import screen_height,screen_width,BG_generic_path
-import classes
+from models.config import screen_height,screen_width,BG_generic_path
+import models.Blocks
+import models.Windows
 
 #Create main window
 win = pygame.display.set_mode((screen_width,screen_height))
@@ -21,8 +22,8 @@ bg2 = pygame.image.load(BG_generic_path).convert()
 bg = pygame.transform.scale(bg,(screen_width,screen_height))
 
 #Create scroller and initialising it with a START block
-scroll_win = classes.Scroller((300,screen_height*2),screen_width-300,0,bg2)
-scroll_win.blocks.append([classes.START_Block(20,20)])
+scroll_win = classes.Scroller((500,screen_height*2),0,200,bg2)
+scroll_win.blocks.append([models.Blocks.START_Block(20,20)])
 
 #Initialising a variable to track whether a block is being dragged or not
 global is_draging 
@@ -38,23 +39,32 @@ run = True
 blocks = []
 
 #Placing a test origin IF_block
-origin = classes.IF_Block(100,100)
+origin = models.Blocks.IF_Block(100,100)
+origin_else = models.Blocks.ELSE_Block(300,100)
+
 blocks.append(origin)
+blocks.append(origin_else)
 
 
 def draw_screen():
-    #Drawing all items in order (bg to fg)
+    """
+    Drawing all items in order (bg to fg)
+    """
     win.blit(bg,(0,0))
     scroll_win.draw(win)
     for block in blocks:
         block.draw(win)
 
 def add_tuple(a,b):
-    #Quick functions for adding tuples
+    """
+    Quick functions for adding tuples
+    """
     return(a[0]+b[0],a[1]+b[1])
 
 def check_pick_up_in_scroller(scroller):
-    #Check if a block is being picked up in the given scroller
+    """
+    Check if a block is being picked up in the given scroller
+    """
     for line in scroller.blocks:
         for block in line: #Looking at every blocks in the scroller
             if block.rect.collidepoint(scroller.global_coord_to_local(pos)) and block.is_movable:
@@ -70,7 +80,9 @@ def check_pick_up_in_scroller(scroller):
                 block.write_pos(add_tuple(scroller.local_coord_to_global(pos),(block.width//2,block.height//2)))
 
 def check_pick_up_in_main():
-    #Check if a block is being picked up in main
+    """
+    Check if a block is being picked up in main
+    """
     global is_draging
     global blocks
     for block in blocks: #Looking at all blocks in main
@@ -84,35 +96,43 @@ def check_pick_up_in_main():
             #Breaking to avoid picking up multiple blocks
 
 def check_drop_down_in_scroller(scroller):
-    #Check if a block is being dropped down in a scroller
+    """
+    Check if a block is being dropped down in a scroller
+    """
     global is_draging
     global blocks
     is_draging=False
     #Block is being dropped down
     for block in blocks:
         if block.clicked: 
-            #Finding the clicked block
+            # Finding the clicked block
             block.clicked = False 
             target_not_found = True 
-            #If no target snap point is found, the block is droppped
+            # If no target snap point is found, the block is droppped
             for line in scroller.blocks:
                 for snap in line: 
                     #Looking at all blocks in the scroller
-                    if isinstance(snap,classes.SNAP_Block) and snap.rect.collidepoint(scroller.global_coord_to_local(pos)):
-                        #If the block is a snap point and the cursor is over it
-                        scroller.replace(snap,block)
+                    if snap.rect.collidepoint(scroller.global_coord_to_local(pos)):
+                        if isinstance(snap,models.Blocks.SNAP_Block):
+                            # If the block is a snap point and the cursor is over it
+                            scroller.replace(snap,block)
+                        else:
+                            scroller.insert(snap,block)
                         blocks.remove(block)
-                        #Replacing the snap point with the block and removing the block from the main window
+                        # Replacing the snap point with the block and removing the block from the main window
                         block.write_pos(add_tuple(scroller.global_coord_to_local(pos),(-block.width//2,-block.height//2)))
-                        #Updating the block coordinates to account for the changing frame of reference
+                        # Updating the block coordinates to account for the changing frame of reference
                         target_not_found = False
+                        return
             if target_not_found:
-                #If the block was dropped over no snap point
+                # If the block was dropped over no snap point
                 blocks.remove(block)
-                #The block is deleted
+                # The block is deleted
 
 def update_dragged_position():
-    #Update the position of dragged block to put it under the cursor
+    """
+    Update the position of dragged block to put it under the cursor
+    """
     global blocks
     for block in blocks:
         if block.clicked:
@@ -150,8 +170,18 @@ while run:
     update_dragged_position()
     #Updating the position of dragged blocks
 
-    if len(blocks)==0:
-        new = classes.IF_Block(100,100)
+    is_if = False
+    is_else = False
+    for i in blocks:
+        if isinstance(i,models.Blocks.IF_Block):
+            is_if = True
+        if isinstance(i,models.Blocks.ELSE_Block): 
+            is_else = True
+    if not is_if:
+        new = models.Blocks.IF_Block(100,100)
+        blocks.append(new)
+    if not is_else:
+        new = models.Blocks.ELSE_Block(300,100)
         blocks.append(new)
     #Adding a new IF_Block if there are none in main, for test purposes
 

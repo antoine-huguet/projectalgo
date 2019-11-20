@@ -1,5 +1,6 @@
 import pygame
-import constantes as cst
+import models.config
+import models.Blocks
 
 class Scroller(pygame.surface.Surface):
     #A class that contains coding blocks and is able
@@ -29,15 +30,15 @@ class Scroller(pygame.surface.Surface):
                 # If the first block takes other block on it's right
                 line = []
                 for j in self.blocks[i]:
-                    if not isinstance(j,SNAP_Block):
+                    if not isinstance(j,models.Blocks.SNAP_Block):
                         line.append(j)
-                line.append(SNAP_Block(0,0))
+                line.append(models.Blocks.SNAP_Block(0,0))
                 up.append(line)
                 # Only save non snap blocks in the row and if necessary adds one at the end
-            elif not isinstance(self.blocks[i][0],SNAP_Block):
-                up.append([self.blocks[i][0],SNAP_Block(0,0)])
+            elif not isinstance(self.blocks[i][0],models.Blocks.SNAP_Block):
+                up.append([self.blocks[i][0]])
             # If the block does not take side blocks, it is appened
-        up.append([SNAP_Block(0,0)])
+        up.append([models.Blocks.SNAP_Block(0,0)])
         # Adds a snap point below the last block
         self.blocks = up
 
@@ -50,7 +51,7 @@ class Scroller(pygame.surface.Surface):
         # Updating snap points
         self.blocks[0][0].draw(self)
         # Drawing the START block
-        cursorx,cursory = self.blocks[0][0].x, self.blocks[0][0].y+self.blocks[0][0].height+cst.y_spacing
+        cursorx,cursory = self.blocks[0][0].x, self.blocks[0][0].y+self.blocks[0][0].height+models.config.y_spacing
         # Set the drawing cursor to the initial position (below start block)
         cursorx_ini = cursorx
         # Saves the X coordinate of the start of rows
@@ -62,20 +63,20 @@ class Scroller(pygame.surface.Surface):
                 block.y = cursory
                 block.draw(self)
                 # Placing block at the cursor
-                cursorx+= block.width + cst.x_spacing
+                cursorx+= block.width + models.config.x_spacing
                 # Moving the cursor X-wise
                 if block.height > max_y_size:
                     max_y_size = block.height
             cursorx = cursorx_ini
             # Resetting the X coordinate of the cursor
-            cursory += max_y_size + cst.y_spacing
+            cursory += max_y_size + models.config.y_spacing
             # Moving the cursor Y-wise
         window.blit(self,(self.x,self.yoffset-self.scroll_y))
         #Drawing self onto the given window
     
     def scroll(self,amount):
         # Changes the scrolling amount if in range of the maximum scrolling
-        if 0<=self.scroll_y + amount < (self.size[1]-cst.screen_height):
+        if 0<=self.scroll_y + amount < (self.size[1]-config.screen_height):
             self.scroll_y += amount
     
     def remove(self,element):
@@ -109,52 +110,22 @@ class Scroller(pygame.surface.Surface):
         # Returns a pygame.rect representing the hitbox of self
         return self.get_rect().move(self.x,self.yoffset-self.scroll_y)
 
-    def replace(self,target, item):
+    def replace(self, target, item):
         # Replace a target by a given item in self.blocks
         for i in range(len(self.blocks)):
             for j in range(len(self.blocks[i])):
                 if self.blocks[i][j]==target:
                     self.blocks[i][j] = item
-
-class Block():
-    def __init__(self,image,xpos,ypos):
-        self.image = image # Visual appearance 
-        self.clicked = False
-        self.rect = self.image.get_rect()
-        self.width = self.image.get_width()
-        self.height = self.image.get_height()
-        self.y = ypos
-        self.x = xpos
-        # X and Y position of the block
-        self.snappoints = []
-        # List of all snappoints the block has
-        self.is_movable = True
     
-    def draw(self,window):
-        # Draw self to a given window
-        self.rect = self.image.get_rect()
-        self.rect.x = self.x
-        self.rect.y = self.y
-        window.blit(self.image,(self.x,self.y))
-
-    def write_pos(self,pos):
-        # Convinient method to write self.x and self.y
-        self.x=pos[0]
-        self.y = pos[1]
-
-
-class IF_Block(Block):
-    def __init__(self,xpos,ypos):
-        super().__init__(pygame.transform.scale(pygame.image.load(cst.IF_path).convert_alpha(),(100,50)),xpos,ypos)
-        self.snappoints=['below','side']
-
-class SNAP_Block(Block):
-    def __init__(self,xpos,ypos):
-        super().__init__(pygame.transform.scale(pygame.image.load(cst.IF_SNAP_path).convert_alpha(),(100,50)),xpos,ypos)
-        self.is_movable = False
-    
-class START_Block(Block):
-    def __init__(self,xpos,ypos):
-        super().__init__(pygame.transform.scale(pygame.image.load(cst.START_path).convert_alpha(),(100,50)),xpos,ypos)
-        self.is_movable = False
-        self.snappoints = ['below']
+    def insert(self, target, item):
+        for i,line in enumerate(self.blocks):
+            for j,block in enumerate(line):
+                if block == target:
+                    if j==0:
+                        print('inserting a row')
+                        self.blocks.insert(i,[item])
+                        return
+                    else:
+                        print('inserting a block')
+                        self.blocks[i].insert(j,item)
+                        return
