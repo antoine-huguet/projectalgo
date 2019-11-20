@@ -39,7 +39,9 @@ blocks = []
 
 #Placing a test origin IF_block
 origin = classes.IF_Block(100,100)
+origin_else = classes.ELSE_Block(100,300)
 blocks.append(origin)
+blocks.append(origin_else)
 
 
 def draw_screen():
@@ -109,6 +111,7 @@ def check_drop_down_in_scroller(scroller):
                         block.write_pos(add_tuple(scroller.global_coord_to_local(pos),(-block.width//2,-block.height//2)))
                         # Updating the block coordinates to account for the changing frame of reference
                         target_not_found = False
+                        return
             if target_not_found:
                 # If the block was dropped over no snap point
                 blocks.remove(block)
@@ -153,8 +156,18 @@ while run:
     update_dragged_position()
     #Updating the position of dragged blocks
 
-    if len(blocks)==0:
+    is_if = False
+    is_else = False
+    for i in blocks:
+        if isinstance(i,classes.IF_Block):
+            is_if = True
+        if isinstance(i,classes.ELSE_Block): 
+            is_else = True
+    if not is_if:
         new = classes.IF_Block(100,100)
+        blocks.append(new)
+    if not is_else:
+        new = classes.ELSE_Block(100,300)
         blocks.append(new)
     #Adding a new IF_Block if there are none in main, for test purposes
 

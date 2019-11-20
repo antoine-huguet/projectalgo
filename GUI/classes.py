@@ -121,9 +121,13 @@ class Scroller(pygame.surface.Surface):
             for j,block in enumerate(line):
                 if block == target:
                     if j==0:
+                        print('inserting a row')
                         self.blocks.insert(i,[item])
+                        return
                     else:
+                        print('inserting a block')
                         self.blocks[i].insert(j,item)
+                        return
 
 class Block():
     def __init__(self,image,xpos,ypos):
@@ -156,6 +160,11 @@ class IF_Block(Block):
     def __init__(self,xpos,ypos):
         super().__init__(pygame.transform.scale(pygame.image.load(cst.IF_path).convert_alpha(),(100,50)),xpos,ypos)
         self.snappoints=['below','side']
+
+class ELSE_Block(Block):
+    def __init__(self,xpos,ypos):
+        super().__init__(pygame.transform.scale(pygame.image.load(cst.ELSE_path).convert_alpha(),(100,50)),xpos,ypos)
+        self.snappoints=['below']
 
 class SNAP_Block(Block):
     def __init__(self,xpos,ypos):
