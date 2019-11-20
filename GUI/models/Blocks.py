@@ -24,7 +24,7 @@ class Block():
 
     def write_pos(self,pos):
         # Convinient method to write self.x and self.y
-        self.x=pos[0]
+        self.x = pos[0]
         self.y = pos[1]
 
 ## --- All blocsk
@@ -140,3 +140,25 @@ class PRINT_BLOCK(Block):
     def __init__(self,xpos,ypos):
         super().__init__(pygame.transform.scale(pygame.image.load(models.config.PRINT_path).convert_alpha(),(204,72)),xpos,ypos)
         self.snappoints=['side']
+
+class INPUT_BLOCK(Block):
+    '''Blocks that have been created from a user line input.'''
+    def __init__(self,posX,posY,text):
+        image = pygame.transform.scale(pygame.image.load(models.config.PRINT_path).convert_alpha(),(204,72)) #This doesn't matter as it is not used.
+        super().__init__(image,posX,posY)
+        self.text = text
+        self.textColor = (255,255,255) #White
+        self.backgroundColor = (59,103,142) #grey-blue
+        self.fontSize = models.config.fontSize
+        self.fontName = models.config.fontName
+        self.font = pygame.font.Font(self.fontName, self.fontSize) 
+
+    def __setSize__(self):
+        self.height = 72 #Same as other blocks
+        self.width = 15*len(self.text)
+
+    def draw(self,window):
+        # Overwrite the existing one
+        textDisp = self.font.render(self.text,True,self.textColor,self.backgroundColor)
+        textRect = textDisp.get_rect().move(self.x,self.y)
+        window.blit(self.image,(self.x,self.y))

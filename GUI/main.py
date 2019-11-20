@@ -201,7 +201,11 @@ while run:
                 # If the left mouse button is released (Falling edge)
                 check_drop_down_in_scroller(scroll_win)
         elif event.type == cst.KEYDOWN:
-            blocWriter.write(event)
+            newBlock = blocWriter.write(event)
+            if newBlock != None:
+                #We have a new user input created bloc
+                pass
+                # TODO : fill here
 
     update_dragged_position()
     #Updating the position of dragged blocks
