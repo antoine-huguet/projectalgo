@@ -1,5 +1,11 @@
 
+
 class Bloc:
+    prefixes=['if','while','print(','=','','','A','B','C','D']
+    suffixes=[':',':',')','','','','','','','']
+    tabs=[1,1,0,0,-1,0,0,0,0,0]
+    dico_calcul={'.':'*','*':'*','/':'/', '%':'%','^':'**', '²':'*2','+':'+','-':'-'}
+    
     def __init__(self,id,tab=None,prefix=None,suffix=None,condition=False,args=(None,None)):
         self.id=id
         self.tab=tabs[id]
@@ -10,31 +16,33 @@ class Bloc:
         self.condition=condition
         self.args=args
 
-dico_calcul={'.':'*','*':'*','/':'/', '%':'%','^':'**', '²':'**2'}
 
 
 class Calcul_string(Bloc):
-    def __init__(self,uses_variables,text,code=''):
-        super().__init__(Bloc)
-        self.uses_variables=uses_variables
+    def __init__(self,text):
+        super().__init__(6)
         self.text=text
+        self.code=''
+        self.value = None
     def python(self):
         txt=self.text
+        self.code = ''
         for i in range(len(txt)):
-            if txt[i] in dico_calcul:
+            if txt[i] in Bloc.dico_calcul:
                 self.code+=dico_calcul[txt[i]] 
             if 47<ord(txt[i])<58:
                 self.code+=txt[i]
             if i>1 and 47<ord(txt[i-1])<58:
-                self.code+='*'+txt[i]
-            if ord(txt[i])>64 and ord(txt[i+1])>64:
+                self.code+='*'
+            if i<len(txt)-1 and ord(txt[i])>64 and ord(txt[i+1])>64:
                 self.code+=txt[i]+'*'
+            elif ord(txt[i])>64 and txt[i] not in dico_calcul:
+                self.code+=txt[i]
         return self.code
     def evaluate(self):
-        exec(python.self())
-
+        exec("self.value="+self.python())
+        return self.value
             
-
 
 
 #argument est une liste qui contient les éventuels arguments du bloc: [nom_variable,valeur] ou [None,printable]
@@ -72,7 +80,7 @@ def code_utilisateur(block_list):
             if bloc.id==3 or bloc.id==4:
                 L.append(bloc.args)
                 code.append('\n time.sleep(.2) \n display(bloc.args)')
-            #mise à jour de la liste des affectations et prints
+            #mise à jour de la liste des affectations et prints, pause et affichage
         code.append('\n')
     return(''.join(code),L)
 
