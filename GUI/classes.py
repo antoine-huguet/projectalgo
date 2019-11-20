@@ -35,7 +35,7 @@ class Scroller(pygame.surface.Surface):
                 up.append(line)
                 # Only save non snap blocks in the row and if necessary adds one at the end
             elif not isinstance(self.blocks[i][0],SNAP_Block):
-                up.append([self.blocks[i][0],SNAP_Block(0,0)])
+                up.append([self.blocks[i][0]])
             # If the block does not take side blocks, it is appened
         up.append([SNAP_Block(0,0)])
         # Adds a snap point below the last block
