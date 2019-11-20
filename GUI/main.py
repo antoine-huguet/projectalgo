@@ -8,8 +8,9 @@
 
 import pygame
 import pygame.locals as cst
-from constantes import screen_height,screen_width,BG_generic_path
-import classes
+from models.config import screen_height,screen_width,BG_generic_path
+import models.Blocks
+import models.Windows
 
 #Create main window
 win = pygame.display.set_mode((screen_width,screen_height))
@@ -21,8 +22,8 @@ bg2 = pygame.image.load(BG_generic_path).convert()
 bg = pygame.transform.scale(bg,(screen_width,screen_height))
 
 #Create scroller and initialising it with a START block
-scroll_win = classes.Scroller((300,screen_height*2),screen_width-300,0,bg2)
-scroll_win.blocks.append([classes.START_Block(20,20)])
+scroll_win = models.Windows.Scroller((300,screen_height*2),screen_width-300,0,bg2)
+scroll_win.blocks.append([models.Blocks.START_Block(20,20)])
 
 #Initialising a variable to track whether a block is being dragged or not
 global is_draging 
@@ -38,8 +39,8 @@ run = True
 blocks = []
 
 #Placing a test origin IF_block
-origin = classes.IF_Block(100,100)
-origin_else = classes.ELSE_Block(100,300)
+origin = models.Blocks.IF_Block(100,100)
+origin_else = models.Blocks.ELSE_Block(100,300)
 blocks.append(origin)
 blocks.append(origin_else)
 
@@ -101,7 +102,7 @@ def check_drop_down_in_scroller(scroller):
                 for snap in line: 
                     #Looking at all blocks in the scroller
                     if snap.rect.collidepoint(scroller.global_coord_to_local(pos)):
-                        if isinstance(snap,classes.SNAP_Block):
+                        if isinstance(snap,models.Blocks.SNAP_Block):
                             # If the block is a snap point and the cursor is over it
                             scroller.replace(snap,block)
                         else:
@@ -159,15 +160,15 @@ while run:
     is_if = False
     is_else = False
     for i in blocks:
-        if isinstance(i,classes.IF_Block):
+        if isinstance(i,models.Blocks.IF_Block):
             is_if = True
-        if isinstance(i,classes.ELSE_Block): 
+        if isinstance(i,models.Blocks.ELSE_Block): 
             is_else = True
     if not is_if:
-        new = classes.IF_Block(100,100)
+        new = models.Blocks.IF_Block(100,100)
         blocks.append(new)
     if not is_else:
-        new = classes.ELSE_Block(100,300)
+        new = models.Blocks.ELSE_Block(100,300)
         blocks.append(new)
     #Adding a new IF_Block if there are none in main, for test purposes
 
