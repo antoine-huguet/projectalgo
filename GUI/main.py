@@ -12,6 +12,8 @@ from models.config import screen_height,screen_width,BG_generic_path
 import models.Blocks
 import models.Windows
 
+pygame.init()
+
 #Create main window
 win = pygame.display.set_mode((screen_width,screen_height))
 pygame.display.set_caption('Game')
@@ -24,6 +26,10 @@ bg = pygame.transform.scale(bg,(screen_width,screen_height))
 #Create scroller and initialising it with a START block
 scroll_win = models.Windows.Scroller((520,screen_height),0,0,bg2)
 scroll_win.blocks.append([models.Blocks.START_Block(20,20)])
+
+#Create global printer
+global_printer = models.Windows.Printer((screen_width-1000,screen_height),1000,0)
+global_printer.addLine("Welcome !")
 
 #Initialising a variable to track whether a block is being dragged or not
 global is_draging 
@@ -76,6 +82,7 @@ def draw_screen():
     """
     win.blit(bg,(0,0))
     scroll_win.draw(win)
+    global_printer.draw(win)
     for block in blocks:
         block.draw(win)
 
