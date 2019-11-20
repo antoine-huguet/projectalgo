@@ -8,7 +8,7 @@
 
 import pygame
 import pygame.locals as cst
-from models.config import screen_height,screen_width,BG_generic_path
+from models.config import screen_height,screen_width,BG_generic_path,startPrinter
 import models.Blocks
 import models.Windows
 
@@ -30,7 +30,7 @@ drawer = models.Windows.Block_drawer((520,screen_height),520,0,bg2,[models.Block
 drawer.classes+=[models.Blocks.PLUS_BLOCK,models.Blocks.MINUS_BLOCK,models.Blocks.DIV_BLOCK,models.Blocks.X_BLOCK,models.Blocks.PL_BLOCK,models.Blocks.PR_BLOCK]
 
 #Create global printer
-global_printer = models.Windows.Printer((screen_width-1000,screen_height),1000,0)
+global_printer = models.Windows.Printer((screen_width-startPrinter,screen_height),startPrinter,0)
 global_printer.addLine("Welcome !")
 
 #Initialising a variable to track whether a block is being dragged or not
