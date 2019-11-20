@@ -4,8 +4,13 @@ fontSize = 32
 screen_width = 960*2
 screen_height = 540*2
 
+#For the code part
 x_spacing = 5
 y_spacing = 10
+
+#For the drawer
+x_spacing_drawer = 10
+y_spacing_drawer = 15
 
 BG_generic_path = './GUI/resources/backgrounds/generic.png'
 

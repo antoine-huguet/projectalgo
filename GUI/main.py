@@ -24,7 +24,8 @@ bg = pygame.transform.scale(bg,(screen_width,screen_height))
 #Create scroller and initialising it with a START block
 scroll_win = models.Windows.Scroller((520,screen_height),0,0,bg2)
 scroll_win.blocks.append([models.Blocks.START_Block(20,20)])
-
+drawer = models.Windows.Block_drawer((520,screen_height),520,0,bg2,[models.Blocks.IF_Block,models.Blocks.WHILE_BLOCK,models.Blocks.ELSE_Block,models.Blocks.END_BLOCK])
+drawer.classes+=[models.Blocks.PLUS_BLOCK,models.Blocks.MINUS_BLOCK,models.Blocks.DIV_BLOCK,models.Blocks.X_BLOCK,models.Blocks.PL_BLOCK,models.Blocks.PR_BLOCK]
 #Initialising a variable to track whether a block is being dragged or not
 global is_draging 
 is_draging = False
@@ -45,37 +46,13 @@ blocks = []
 #blocks.append(origin)
 #blocks.append(origin_else)
 
-def rebuild_blocks():
-    global blocks
-    blocks = []
-    blocks.append(models.Blocks.IF_Block(520,20))
-    blocks.append(models.Blocks.ELSE_Block(520,120))
-    blocks.append(models.Blocks.END_BLOCK(520,220))
-    blocks.append(models.Blocks.WHILE_BLOCK(520,320))
-    blocks.append(models.Blocks.MINUS_BLOCK(520,420))
-    blocks.append(models.Blocks.PLUS_BLOCK(520,520))
-    blocks.append(models.Blocks.X_BLOCK(520,620))
-    blocks.append(models.Blocks.DIV_BLOCK(670,20))
-    blocks.append(models.Blocks.PL_BLOCK(670,120))
-    blocks.append(models.Blocks.PR_BLOCK(670,220))
-    blocks.append(models.Blocks.PRINT_BLOCK(670,320))
-    blocks.append(models.Blocks.AFFECTATION_BLOCK(670,420))
-    blocks.append(models.Blocks.A_BLOCK(670,520))
-    blocks.append(models.Blocks.B_BLOCK(670,620))
-    blocks.append(models.Blocks.C_BLOCK(820,20))
-    blocks.append(models.Blocks.D_BLOCK(820,120))
-    blocks.append(models.Blocks.E_BLOCK(820,220))
-    blocks.append(models.Blocks.F_BLOCK(820,320))
-
-
-rebuild_blocks()
-
 def draw_screen():
     """
     Drawing all items in order (bg to fg)
     """
     win.blit(bg,(0,0))
     scroll_win.draw(win)
+    drawer.draw(win)
     for block in blocks:
         block.draw(win)
 
@@ -102,6 +79,22 @@ def check_pick_up_in_scroller(scroller):
 
                 #Updating the block coordinates to account for the changing frame of reference
                 block.write_pos(add_tuple(scroller.local_coord_to_global(pos),(block.width//2,block.height//2)))
+
+def check_pick_up_in_drawer(scroller):
+    """
+    Check if a block is being picked up in the given scroller
+    """
+    for block in scroller.blocks: #Looking at every blocks in the scroller
+        if block.rect.collidepoint(scroller.global_coord_to_local(pos)) and block.is_movable:
+            #If the mouse is over the block and the block is movable
+            block.clicked = True #The block is now being clicked on
+            global is_draging 
+            is_draging = True # The mouse cursor is now draging a block 
+            # Removing the block from the scroller and adding it to the main window
+            blocks.append(block)
+
+            #Updating the block coordinates to account for the changing frame of reference
+            block.write_pos(add_tuple(scroller.local_coord_to_global(pos),(block.width//2,block.height//2)))
 
 def check_pick_up_in_main():
     """
@@ -181,8 +174,8 @@ while run:
                 if scroll_win.get_hitbox().collidepoint(pos):
                     #If the cursor is over the scroller
                     check_pick_up_in_scroller(scroll_win)
-                else:
-                    check_pick_up_in_main()
+                elif drawer.get_hitbox().collidepoint(pos):
+                    check_pick_up_in_drawer(drawer)
             elif event.button == 4: scroll_win.scroll(-20) #If mousewheel up, scroll the scroller
             elif event.button == 5: scroll_win.scroll(20)
             #If mousewheel is moved, scroll the scroller
@@ -193,26 +186,6 @@ while run:
 
     update_dragged_position()
     #Updating the position of dragged blocks
-    '''
-    is_if = False
-    is_else = False
-    for i in blocks:
-        if isinstance(i,models.Blocks.IF_Block):
-            is_if = True
-        if isinstance(i,models.Blocks.ELSE_Block): 
-            is_else = True
-    if not is_if:
-        new = models.Blocks.IF_Block(100,100)
-        blocks.append(new)
-    if not is_else:
-        new = models.Blocks.ELSE_Block(300,100)
-        blocks.append(new)
-    #Adding a new IF_Block if there are none in main, for test purposes
-    '''
-    if len(blocks)<18:
-        print(len(blocks))
-        rebuild_blocks()
-        print('Blocks rebuilt')
     draw_screen()
     #Draw the screen
     pygame.display.flip()

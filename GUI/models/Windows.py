@@ -171,3 +171,40 @@ class Printer(pygame.surface.Surface):
         if len(self.text)>self.maxLine:
             self.text.pop(0)
         #We use text as a FIFO
+
+class Block_drawer(Scroller):
+    '''
+    This class is a scrollable window that stores blocks 
+    '''
+    def __init__(self,size,x,y,bg,classes):
+        super().__init__(size,x,y,bg)
+        self.classes = classes
+        self.blocks = []
+
+    def rebuild_blocks(self):
+        self.blocks = []
+        for i in self.classes:
+            self.blocks.append(i(0,0))
+
+    def draw(self,window):
+        self.rebuild_blocks()
+        self.blit(self.bg,(0,0))
+        cursorx,cursory = 20,20
+        cursorx_ini = 20
+        block_cursor = 0
+        max_y = 0
+        l = len(self.blocks)
+        while block_cursor<l:
+            if cursorx + models.config.x_spacing_drawer + self.blocks[block_cursor].width < self.size[0]:
+                self.blocks[block_cursor].x = cursorx
+                self.blocks[block_cursor].y = cursory
+                self.blocks[block_cursor].draw(self)
+                if self.blocks[block_cursor].height > max_y:
+                    max_y = self.blocks[block_cursor].height
+                cursorx += models.config.x_spacing_drawer + self.blocks[block_cursor].width
+                block_cursor+=1
+            else:
+                cursory += max_y + models.config.y_spacing_drawer
+                cursorx = cursorx_ini
+                max_y = 0
+        window.blit(self,(self.x,self.y),area = pygame.rect.Rect((0,self.scroll_y),self.size))
