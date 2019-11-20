@@ -22,7 +22,7 @@ bg2 = pygame.image.load(BG_generic_path).convert()
 bg = pygame.transform.scale(bg,(screen_width,screen_height))
 
 #Create scroller and initialising it with a START block
-scroll_win = models.Windows.Scroller((300,screen_height*2),screen_width-300,0,bg2)
+scroll_win = classes.Scroller((500,screen_height*2),0,200,bg2)
 scroll_win.blocks.append([models.Blocks.START_Block(20,20)])
 
 #Initialising a variable to track whether a block is being dragged or not
@@ -40,24 +40,31 @@ blocks = []
 
 #Placing a test origin IF_block
 origin = models.Blocks.IF_Block(100,100)
-origin_else = models.Blocks.ELSE_Block(100,300)
+origin_else = models.Blocks.ELSE_Block(300,100)
+
 blocks.append(origin)
 blocks.append(origin_else)
 
 
 def draw_screen():
-    #Drawing all items in order (bg to fg)
+    """
+    Drawing all items in order (bg to fg)
+    """
     win.blit(bg,(0,0))
     scroll_win.draw(win)
     for block in blocks:
         block.draw(win)
 
 def add_tuple(a,b):
-    #Quick functions for adding tuples
+    """
+    Quick functions for adding tuples
+    """
     return(a[0]+b[0],a[1]+b[1])
 
 def check_pick_up_in_scroller(scroller):
-    #Check if a block is being picked up in the given scroller
+    """
+    Check if a block is being picked up in the given scroller
+    """
     for line in scroller.blocks:
         for block in line: #Looking at every blocks in the scroller
             if block.rect.collidepoint(scroller.global_coord_to_local(pos)) and block.is_movable:
@@ -73,7 +80,9 @@ def check_pick_up_in_scroller(scroller):
                 block.write_pos(add_tuple(scroller.local_coord_to_global(pos),(block.width//2,block.height//2)))
 
 def check_pick_up_in_main():
-    #Check if a block is being picked up in main
+    """
+    Check if a block is being picked up in main
+    """
     global is_draging
     global blocks
     for block in blocks: #Looking at all blocks in main
@@ -87,7 +96,9 @@ def check_pick_up_in_main():
             #Breaking to avoid picking up multiple blocks
 
 def check_drop_down_in_scroller(scroller):
-    #Check if a block is being dropped down in a scroller
+    """
+    Check if a block is being dropped down in a scroller
+    """
     global is_draging
     global blocks
     is_draging=False
@@ -119,7 +130,9 @@ def check_drop_down_in_scroller(scroller):
                 # The block is deleted
 
 def update_dragged_position():
-    #Update the position of dragged block to put it under the cursor
+    """
+    Update the position of dragged block to put it under the cursor
+    """
     global blocks
     for block in blocks:
         if block.clicked:
@@ -168,7 +181,7 @@ while run:
         new = models.Blocks.IF_Block(100,100)
         blocks.append(new)
     if not is_else:
-        new = models.Blocks.ELSE_Block(100,300)
+        new = models.Blocks.ELSE_Block(300,100)
         blocks.append(new)
     #Adding a new IF_Block if there are none in main, for test purposes
 
