@@ -109,12 +109,21 @@ class Scroller(pygame.surface.Surface):
         # Returns a pygame.rect representing the hitbox of self
         return self.get_rect().move(self.x,self.yoffset-self.scroll_y)
 
-    def replace(self,target, item):
+    def replace(self, target, item):
         # Replace a target by a given item in self.blocks
         for i in range(len(self.blocks)):
             for j in range(len(self.blocks[i])):
                 if self.blocks[i][j]==target:
                     self.blocks[i][j] = item
+    
+    def insert(self, target, item):
+        for i,line in enumerate(self.blocks):
+            for j,block in enumerate(line):
+                if block == target:
+                    if j==0:
+                        self.blocks.insert(i,[item])
+                    else:
+                        self.blocks[i].insert(j,item)
 
 class Block():
     def __init__(self,image,xpos,ypos):
@@ -155,6 +164,6 @@ class SNAP_Block(Block):
     
 class START_Block(Block):
     def __init__(self,xpos,ypos):
-        super().__init__(pygame.transform.scale(pygame.image.load(cst.START_path).convert_alpha(),(100,50)),xpos,ypos)
+        super().__init__(pygame.transform.scale(pygame.image.load(cst.START_path).convert_alpha(),(100,50)),xpos,ypos )
         self.is_movable = False
         self.snappoints = ['below']
