@@ -5,16 +5,17 @@ import models.Blocks
 class Scroller(pygame.surface.Surface):
     #A class that contains coding blocks and is able
     #to scroll up and down
-    def __init__(self,size,x,yoffset,bg):
-        super().__init__(size)
+    def __init__(self,size,x,y,bg):
+        super().__init__((size[0],2000))
         self.blocks = [] # List of blocks
         # FORMAT :
         # List of all rows
         # Rows are lists of blocks
         # [ [First row First block, First row second block,..] , [Second row First block,..] ...]
+        self.length = size[1]
         self.scroll_y = 0 # Storing the amount of y offset due tu scrolling
         self.x = x  # X position of the Scroller in main
-        self.yoffset = yoffset # Y position offset
+        self.y = y # Y position offset
         self.size = size 
         self.bg = bg # Background image
 
@@ -42,8 +43,19 @@ class Scroller(pygame.surface.Surface):
         # Adds a snap point below the last block
         self.blocks = up
 
+    def update_length(self):
+        res = self.blocks[0][0].y+self.blocks[0][0].height+models.config.y_spacing
+        for line in self.blocks:
+            max_y_size = 0
+            for block in line:
+                if block.height > max_y_size:
+                    max_y_size = block.height
+            res+= max_y_size + models.config.y_spacing
+        self.length = max(res,self.length)
+
 
     def draw(self,window):
+        self.update_length()
         # Draws self to a given window
         self.blit(self.bg,(0,0))
         # Laying the background
@@ -71,12 +83,12 @@ class Scroller(pygame.surface.Surface):
             # Resetting the X coordinate of the cursor
             cursory += max_y_size + models.config.y_spacing
             # Moving the cursor Y-wise
-        window.blit(self,(self.x,self.yoffset-self.scroll_y))
+        window.blit(self,(self.x,self.y),area = pygame.rect.Rect((0,self.scroll_y),self.size))
         #Drawing self onto the given window
     
     def scroll(self,amount):
         # Changes the scrolling amount if in range of the maximum scrolling
-        if 0<=self.scroll_y + amount < (self.size[1]-config.screen_height):
+        if 0<=self.scroll_y + amount < (self.length-self.size[1]):
             self.scroll_y += amount
     
     def remove(self,element):
@@ -95,20 +107,20 @@ class Scroller(pygame.surface.Surface):
     def global_coord_to_local(self,pos,y=None):
         # Translate global coordinates to local coordinates
         if type(pos)==tuple:
-            return (pos[0]-self.x,pos[1]-self.yoffset+self.scroll_y)
+            return (pos[0]-self.x,pos[1]-self.y+self.scroll_y)
         elif type(pos)==int and type(y)==int:
-            return (pos-self.x,y-self.yoffset+self.scroll_y)
+            return (pos-self.x,y-self.y+self.scroll_y)
 
     def local_coord_to_global(self,pos,y=None):
         # Translate local coordinates to global coordinates
         if type(pos)==tuple:
-            return (pos[0]+self.x,pos[1]+self.yoffset-self.scroll_y)
+            return (pos[0]+self.x,pos[1]+self.y-self.scroll_y)
         elif type(pos)==int and type(y)==int:
-            return (pos+self.x,y+self.yoffset-self.scroll_y)
+            return (pos+self.x,y+self.y-self.scroll_y)
 
     def get_hitbox(self):
         # Returns a pygame.rect representing the hitbox of self
-        return self.get_rect().move(self.x,self.yoffset-self.scroll_y)
+        return self.get_rect().move(self.x,self.y)
 
     def replace(self, target, item):
         # Replace a target by a given item in self.blocks
@@ -122,11 +134,9 @@ class Scroller(pygame.surface.Surface):
             for j,block in enumerate(line):
                 if block == target:
                     if j==0:
-                        print('inserting a row')
                         self.blocks.insert(i,[item])
                         return
                     else:
-                        print('inserting a block')
                         self.blocks[i].insert(j,item)
                         return
 

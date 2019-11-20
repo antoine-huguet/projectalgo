@@ -1,8 +1,8 @@
 fontName = 'freesansbold.ttf'
 fontSize = 32
 
-screen_width = 960
-screen_height = 540
+screen_width = 960*2
+screen_height = 540*2
 
 x_spacing = 5
 y_spacing = 10
