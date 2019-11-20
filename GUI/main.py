@@ -91,25 +91,28 @@ def check_drop_down_in_scroller(scroller):
     #Block is being dropped down
     for block in blocks:
         if block.clicked: 
-            #Finding the clicked block
+            # Finding the clicked block
             block.clicked = False 
             target_not_found = True 
-            #If no target snap point is found, the block is droppped
+            # If no target snap point is found, the block is droppped
             for line in scroller.blocks:
                 for snap in line: 
                     #Looking at all blocks in the scroller
-                    if isinstance(snap,classes.SNAP_Block) and snap.rect.collidepoint(scroller.global_coord_to_local(pos)):
-                        #If the block is a snap point and the cursor is over it
-                        scroller.replace(snap,block)
+                    if snap.rect.collidepoint(scroller.global_coord_to_local(pos)):
+                        if isinstance(snap,classes.SNAP_Block):
+                            # If the block is a snap point and the cursor is over it
+                            scroller.replace(snap,block)
+                        else:
+                            scroller.insert(snap,block)
                         blocks.remove(block)
-                        #Replacing the snap point with the block and removing the block from the main window
+                        # Replacing the snap point with the block and removing the block from the main window
                         block.write_pos(add_tuple(scroller.global_coord_to_local(pos),(-block.width//2,-block.height//2)))
-                        #Updating the block coordinates to account for the changing frame of reference
+                        # Updating the block coordinates to account for the changing frame of reference
                         target_not_found = False
             if target_not_found:
-                #If the block was dropped over no snap point
+                # If the block was dropped over no snap point
                 blocks.remove(block)
-                #The block is deleted
+                # The block is deleted
 
 def update_dragged_position():
     #Update the position of dragged block to put it under the cursor
