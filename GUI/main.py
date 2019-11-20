@@ -22,7 +22,7 @@ bg2 = pygame.image.load(BG_generic_path).convert()
 bg = pygame.transform.scale(bg,(screen_width,screen_height))
 
 #Create scroller and initialising it with a START block
-scroll_win = models.Windows.Scroller((500,screen_height*2),0,200,bg2)
+scroll_win = models.Windows.Scroller((500,screen_height-200),0,200,bg2)
 scroll_win.blocks.append([models.Blocks.START_Block(20,20)])
 
 #Initialising a variable to track whether a block is being dragged or not
@@ -116,7 +116,7 @@ def check_drop_down_in_scroller(scroller):
                         if isinstance(snap,models.Blocks.SNAP_Block):
                             # If the block is a snap point and the cursor is over it
                             scroller.replace(snap,block)
-                        else:
+                        elif snap.is_movable:
                             scroller.insert(snap,block)
                         blocks.remove(block)
                         # Replacing the snap point with the block and removing the block from the main window
@@ -159,8 +159,8 @@ while run:
                     check_pick_up_in_scroller(scroll_win)
                 else:
                     check_pick_up_in_main()
-            elif event.button == 4: scroll_win.scroll(-10) #If mousewheel up, scroll the scroller
-            elif event.button == 5: scroll_win.scroll(10)
+            elif event.button == 4: scroll_win.scroll(-20) #If mousewheel up, scroll the scroller
+            elif event.button == 5: scroll_win.scroll(20)
             #If mousewheel is moved, scroll the scroller
         elif event.type == cst.MOUSEBUTTONUP:
             if event.button == 1 and is_draging:
