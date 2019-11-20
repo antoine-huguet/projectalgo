@@ -12,3 +12,7 @@ We are :
 - Antoine HUGUET
 - Rémi HEITZ
 - Youssef IRHBOULA
+
+## What will happend next ?
+
+We use [Trello](https://trello.com/b/DLjSTZcU/projetalgo) to communicate on the project.
