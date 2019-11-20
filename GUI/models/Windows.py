@@ -76,7 +76,7 @@ class Scroller(pygame.surface.Surface):
     
     def scroll(self,amount):
         # Changes the scrolling amount if in range of the maximum scrolling
-        if 0<=self.scroll_y + amount < (self.size[1]-config.screen_height):
+        if 0<=self.scroll_y + amount < (self.size[1]-models.config.screen_height):
             self.scroll_y += amount
     
     def remove(self,element):

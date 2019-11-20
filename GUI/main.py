@@ -22,7 +22,7 @@ bg2 = pygame.image.load(BG_generic_path).convert()
 bg = pygame.transform.scale(bg,(screen_width,screen_height))
 
 #Create scroller and initialising it with a START block
-scroll_win = classes.Scroller((500,screen_height*2),0,200,bg2)
+scroll_win = models.Windows.Scroller((500,screen_height*2),0,200,bg2)
 scroll_win.blocks.append([models.Blocks.START_Block(20,20)])
 
 #Initialising a variable to track whether a block is being dragged or not
