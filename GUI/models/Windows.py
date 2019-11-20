@@ -129,3 +129,35 @@ class Scroller(pygame.surface.Surface):
                         print('inserting a block')
                         self.blocks[i].insert(j,item)
                         return
+
+class Printer(pygame.surface.Surface):
+    '''A surface used to display lines.'''
+    def __init__(self,size):
+        super().__init__(size)
+        self.size = size #Set size - should not be moved
+        self.textColor = (255,255,255) #White
+        self.backgroundColor = (0,0,0) #Black
+        self.fontSize = models.config.fontSize
+        self.fontName = models.config.fontName
+        # TODO : find a nicer font (to match the bloc)
+        self.font = pygame.font.Font(self.fontName, self.fontSize) 
+        self.text = [] #We use the list as a file, which is empty at first
+        self.maxLine = 10 #We won't display more than maxLine lines at the same time
+        self.xOffSet = 15 #Off set the text from the side of the window
+
+    def draw(self,window):
+        self.fill((0,0,0)) #Get a whole black background
+        numberOfLines = len(self.text) # <=10
+        yPos = self.xOffSet #So that the first line is at a corner
+        for line in self.text:
+            textDisp = self.font.render('> '+line,True,self.textColor)
+            textRect = textDisp.get_rect().move(self.xOffSet,yPos) #Create and move rect to the position required
+            self.blit(textDisp,textRect)
+            yPos += self.fontSize + self.xOffSet #We move down to the next line
+        window.blit(self,(0,0))
+
+    def addLine(self,line):
+        self.text.append(line)
+        if len(self.text)>self.maxLine:
+            self.text.pop(0)
+        #We use text as a FIFO

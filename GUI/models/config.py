@@ -1,3 +1,6 @@
+fontName = 'freesansbold.ttf'
+fontSize = 32
+
 screen_width = 960
 screen_height = 540
 
@@ -5,6 +8,7 @@ x_spacing = 5
 y_spacing = 10
 
 BG_generic_path = './GUI/resources/backgrounds/generic.png'
+
 
 #Start
 START_path = './GUI/resources/blocks/start.png'
