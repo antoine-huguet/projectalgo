@@ -24,10 +24,13 @@ bg2 = pygame.image.load(BG_generic_path).convert()
 bg = pygame.transform.scale(bg,(screen_width,screen_height))
 
 #Create scroller and initialising it with a START block
-scroll_win = models.Windows.Scroller((520,screen_height),0,0,bg2)
+scroll_win = models.Windows.Scroller((700,screen_height),0,0,bg2)
 scroll_win.blocks.append([models.Blocks.START_Block(20,20)])
-drawer = models.Windows.Block_drawer((480,screen_height),520,0,bg2,[models.Blocks.IF_Block,models.Blocks.WHILE_BLOCK,models.Blocks.ELSE_Block,models.Blocks.END_BLOCK])
-drawer.classes+=[models.Blocks.PLUS_BLOCK,models.Blocks.MINUS_BLOCK,models.Blocks.DIV_BLOCK,models.Blocks.X_BLOCK,models.Blocks.PL_BLOCK,models.Blocks.PR_BLOCK]
+drawer = models.Windows.Block_drawer((300,screen_height),700,0,bg2,[models.Blocks.IF_Block,models.Blocks.WHILE_BLOCK,models.Blocks.ELSE_Block,models.Blocks.END_BLOCK,
+models.Blocks.PLUS_BLOCK,models.Blocks.MINUS_BLOCK,models.Blocks.DIV_BLOCK,models.Blocks.X_BLOCK,models.Blocks.PL_BLOCK,models.Blocks.PR_BLOCK,
+models.Blocks.EQUAL_BLOCK,models.Blocks.AFFECTATION_BLOCK,models.Blocks.PRINT_BLOCK,models.Blocks.A_BLOCK,models.Blocks.B_BLOCK,models.Blocks.C_BLOCK,
+models.Blocks.D_BLOCK,models.Blocks.E_BLOCK,models.Blocks.F_BLOCK])
+
 
 #Create global printer
 global_printer = models.Windows.Printer((screen_width-startPrinter,screen_height),startPrinter,0)
@@ -87,6 +90,9 @@ def check_pick_up_in_scroller(scroller):
 
                 #Updating the block coordinates to account for the changing frame of reference
                 block.write_pos(add_tuple(scroller.local_coord_to_global(pos),(block.width//2,block.height//2)))
+                return False
+            elif block.rect.collidepoint(scroller.global_coord_to_local(pos)) and isinstance(block,models.Blocks.START_Block):
+                return True
 
 def check_pick_up_in_drawer(scroller):
     """
@@ -181,7 +187,8 @@ while run:
                 #If the left mouse button is clicked (Rising edge)
                 if scroll_win.get_hitbox().collidepoint(pos):
                     #If the cursor is over the scroller
-                    check_pick_up_in_scroller(scroll_win)
+                    if check_pick_up_in_scroller(scroll_win):
+                        '''code_utilisateur(scroller.blocks)'''
                 elif drawer.get_hitbox().collidepoint(pos):
                     check_pick_up_in_drawer(drawer)
             elif event.button == 4: scroll_win.scroll(-20) #If mousewheel up, scroll the scroller
