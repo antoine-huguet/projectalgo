@@ -142,8 +142,10 @@ class Scroller(pygame.surface.Surface):
 
 class Printer(pygame.surface.Surface):
     '''A surface used to display lines.'''
-    def __init__(self,size):
+    def __init__(self,size,xPos,yPos):
         super().__init__(size)
+        self.xPos = xPos
+        self.yPos = yPos
         self.size = size #Set size - should not be moved
         self.textColor = (255,255,255) #White
         self.backgroundColor = (0,0,0) #Black
@@ -164,7 +166,7 @@ class Printer(pygame.surface.Surface):
             textRect = textDisp.get_rect().move(self.xOffSet,yPos) #Create and move rect to the position required
             self.blit(textDisp,textRect)
             yPos += self.fontSize + self.xOffSet #We move down to the next line
-        window.blit(self,(0,0))
+        window.blit(self,(self.xPos,self.yPos))
 
     def addLine(self,line):
         self.text.append(line)

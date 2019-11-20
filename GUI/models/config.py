@@ -34,6 +34,7 @@ PL_path = './GUI/resources/blocks/pL.png'
 PR_path = './GUI/resources/blocks/pR.png'
 DIV_path = './GUI/resources/blocks/div.png'
 X_path = './GUI/resources/blocks/x.png'
+EQUAL_path = './GUI/resources/blocks/=.png'
 
 #Variables
 A_path = './GUI/resources/blocks/A.png'
