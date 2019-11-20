@@ -26,7 +26,7 @@ bg = pygame.transform.scale(bg,(screen_width,screen_height))
 #Create scroller and initialising it with a START block
 scroll_win = models.Windows.Scroller((520,screen_height),0,0,bg2)
 scroll_win.blocks.append([models.Blocks.START_Block(20,20)])
-drawer = models.Windows.Block_drawer((520,screen_height),520,0,bg2,[models.Blocks.IF_Block,models.Blocks.WHILE_BLOCK,models.Blocks.ELSE_Block,models.Blocks.END_BLOCK])
+drawer = models.Windows.Block_drawer((480,screen_height),520,0,bg2,[models.Blocks.IF_Block,models.Blocks.WHILE_BLOCK,models.Blocks.ELSE_Block,models.Blocks.END_BLOCK])
 drawer.classes+=[models.Blocks.PLUS_BLOCK,models.Blocks.MINUS_BLOCK,models.Blocks.DIV_BLOCK,models.Blocks.X_BLOCK,models.Blocks.PL_BLOCK,models.Blocks.PR_BLOCK]
 
 #Create global printer
