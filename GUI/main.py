@@ -2,7 +2,7 @@
 # GUI example for visual programming using drag and drop blocks
 # Based on the Pygame library
 # (C) 2019 Centralesupélec Coding weeks
-# Released under GNU Public License (GPL)
+# Released under MIT license
 # Github : https://github.com/antoine-huguet/projectalgo
 # -------------------------------------------------------------
 
