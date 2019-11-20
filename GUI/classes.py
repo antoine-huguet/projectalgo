@@ -191,7 +191,6 @@ class WHILE_BLOCK(Block):
         super().__init__(pygame.transform.scale(pygame.image.load(cst.WHILE_path).convert_alpha(),(100,50)),xpos,ypos)
         self.snappoints=['below','side']
 
-
 #Operators
 class MINUS_BLOCK(Block):
     def __init__(self,xpos,ypos):

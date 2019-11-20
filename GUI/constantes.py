@@ -13,7 +13,7 @@ START_path = 'GUI/resources/blocks/start.png'
 SNAP_path = 'GUI/resources/blocks/snap.png'
 
 #Controle
-IF_path = 'GUI/resources/blocks/IF.png'
+IF_path = 'GUI/resources/blocks/if.png'
 ELSE_path = 'GUI/resources/blocks/else.png'
 END_path = 'GUI/resources/blocks/end.png'
 WHILE_path = 'GUI/resources/blocks/while.png'
