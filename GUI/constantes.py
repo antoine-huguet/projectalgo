@@ -24,7 +24,7 @@ PLUS_path = 'GUI/resources/blocks/+.png'
 PL_path = 'GUI/resources/blocks/pL.png'
 PR_path = 'GUI/resources/blocks/pR.png'
 DIV_path = 'GUI/resources/blocks/div.png'
-X_PATH = 'GUI/resources/blocks/x.png'
+X_path = 'GUI/resources/blocks/x.png'
 
 #Variables
 A_path = 'GUI/resources/blocks/A.png'
@@ -34,6 +34,6 @@ D_path = 'GUI/resources/blocks/D.png'
 E_path = 'GUI/resources/blocks/E.png'
 F_path = 'GUI/resources/blocks/F.png'
 
-#Divers
+#Miscelianous
 AFFECTATION_path = 'GUI/resources/blocks/affectation.png'
 PRINT_path = 'GUI/resources/blocks/print.png'
