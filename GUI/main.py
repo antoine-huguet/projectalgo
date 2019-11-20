@@ -8,36 +8,36 @@
 
 import pygame
 import pygame.locals as cst
-from models.config import screen_height,screen_width,BG_generic_path,startPrinter
 import models.Blocks
 import models.Windows
+import models.config
 
 pygame.init()
 
 #Create main window
-win = pygame.display.set_mode((screen_width,screen_height))
+win = pygame.display.set_mode((models.config.screen_width,models.config.screen_height))
 pygame.display.set_caption('Game')
 
 #Load backgrounds for the main window and scroller
-bg = pygame.image.load(BG_generic_path).convert()
-bg2 = pygame.image.load(BG_generic_path).convert()
-bg = pygame.transform.scale(bg,(screen_width,screen_height))
+bg = pygame.transform.scale(pygame.image.load(models.config.BG_generic_path).convert(),(models.config.screen_width,models.config.screen_height))
+bg2 = pygame.image.load(models.config.BG_generic_path).convert()
 
 #Create scroller and initialising it with a START block
-scroll_win = models.Windows.Scroller((700,screen_height),0,0,bg2)
+scroll_win = models.Windows.Scroller((700,models.config.screen_height),0,0,bg2)
 scroll_win.blocks.append([models.Blocks.START_Block(20,20)])
-drawer = models.Windows.Block_drawer((300,screen_height),700,0,bg2,[models.Blocks.IF_Block,models.Blocks.WHILE_BLOCK,models.Blocks.ELSE_Block,models.Blocks.END_BLOCK,
+drawer = models.Windows.Block_drawer((300,models.config.screen_height),700,0,bg2,[models.Blocks.IF_Block,models.Blocks.WHILE_BLOCK,models.Blocks.ELSE_Block,models.Blocks.END_BLOCK,
 models.Blocks.PLUS_BLOCK,models.Blocks.MINUS_BLOCK,models.Blocks.DIV_BLOCK,models.Blocks.X_BLOCK,models.Blocks.PL_BLOCK,models.Blocks.PR_BLOCK,
 models.Blocks.EQUAL_BLOCK,models.Blocks.AFFECTATION_BLOCK,models.Blocks.PRINT_BLOCK,models.Blocks.A_BLOCK,models.Blocks.B_BLOCK,models.Blocks.C_BLOCK,
 models.Blocks.D_BLOCK,models.Blocks.E_BLOCK,models.Blocks.F_BLOCK])
 
-
 #Create global printer
-global_printer = models.Windows.Printer((screen_width-startPrinter,screen_height),startPrinter,0)
+global_printer = models.Windows.Printer((models.config.screen_width-models.config.startPrinter,models.config.screen_height-models.config.heightBlocWriter),models.config.startPrinter,0)
 global_printer.addLine("Welcome !")
 
+#Input zone for text
+blocWriter = models.Windows.BlocWriter((models.config.screen_width-models.config.startPrinter,models.config.heightBlocWriter),models.config.startPrinter,models.config.screen_height-models.config.heightBlocWriter)
+
 #Initialising a variable to track whether a block is being dragged or not
-global is_draging 
 is_draging = False
 
 #Pygame clock to limit framerate
@@ -64,6 +64,7 @@ def draw_screen():
     scroll_win.draw(win)
     drawer.draw(win)
     global_printer.draw(win)
+    blocWriter.draw(win)
     for block in blocks:
         block.draw(win)
 
@@ -184,6 +185,7 @@ while run:
             #Quit the game if ESC or the red cross is pressed
         elif event.type == cst.MOUSEBUTTONDOWN:
             if event.button == 1:
+                blocWriter.setActive(event)
                 #If the left mouse button is clicked (Rising edge)
                 if scroll_win.get_hitbox().collidepoint(pos):
                     #If the cursor is over the scroller
@@ -194,10 +196,12 @@ while run:
             elif event.button == 4: scroll_win.scroll(-20) #If mousewheel up, scroll the scroller
             elif event.button == 5: scroll_win.scroll(20)
             #If mousewheel is moved, scroll the scroller
-        elif event.type == cst.MOUSEBUTTONUP:
+        elif event.type == cst.MOUSEBUTTONUP: 
             if event.button == 1 and is_draging:
                 # If the left mouse button is released (Falling edge)
                 check_drop_down_in_scroller(scroll_win)
+        elif event.type == cst.KEYDOWN:
+            blocWriter.write(event)
 
     update_dragged_position()
     #Updating the position of dragged blocks

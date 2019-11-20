@@ -210,3 +210,54 @@ class Block_drawer(Scroller):
                 cursorx = cursorx_ini
                 max_y = 0
         window.blit(self,(self.x,self.y),area = pygame.rect.Rect((0,self.scroll_y),self.size))
+
+
+class BlocWriter(pygame.surface.Surface):
+    '''A surface used to create text line bloc.'''
+    def __init__(self,size,xPos,yPos):
+        super().__init__(size)
+        self.xPos = xPos
+        self.yPos = yPos
+        self.size = size #Set size - should not be moved
+        self.inputBoxSize = (10,10)
+        self.textColor = (255,255,255) #White
+        self.backgroundColor = (0,0,0) #Black
+        self.inputBoxColor = (0,0,255) #Blue
+        self.fontSize = models.config.fontSize
+        self.fontName = models.config.fontName
+        self.rect = pygame.Rect(self.xPos,self.yPos,self.size[0],self.size[1])
+        # TODO : find a nicer font (to match the bloc)
+        self.font = pygame.font.Font(self.fontName, self.fontSize) 
+        self.defaultText = 'Enter calculation' #The default message to invite the user to type
+        self.text = self.defaultText
+        self.active = False
+
+    def write(self,event):
+        '''Used to write to the box. Event is used to get key input.'''
+        if self.active:
+            if event.key == pygame.K_RETURN:
+                # TODO : handle bloc creation
+                print("Create : {}".format(self.text))
+                self.text = self.defaultText
+            elif event.key == pygame.K_BACKSPACE:
+                self.text = self.text[:-1]
+            else:
+                self.text += event.unicode
+
+    def setActive(self,event):
+        '''Used to define whether or not the user is clicking on the window'''
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if self.rect.collidepoint(event.pos):
+                self.active = True
+                if self.text == self.defaultText:
+                    self.text=''
+            else:
+                self.active = False
+
+    def draw(self,window):
+        '''Draw the surface'''
+        self.fill((125,125,125)) #Get a whole grey background
+        textDisp = self.font.render(self.text,True,self.textColor)
+        textRect = textDisp.get_rect().move(0,0) #Create and move rect to the position required
+        self.blit(textDisp,textRect)
+        window.blit(self,(self.xPos,self.yPos))

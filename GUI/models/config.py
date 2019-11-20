@@ -4,6 +4,7 @@ fontSize = 32
 screen_width = 960*2
 screen_height = 540*2
 startPrinter = 1000
+heightBlocWriter = 200
 
 #For the code part
 x_spacing = 5
