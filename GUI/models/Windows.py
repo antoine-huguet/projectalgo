@@ -52,7 +52,6 @@ class Scroller(pygame.surface.Surface):
                     max_y_size = block.height
             res+= max_y_size + models.config.y_spacing
         self.length = max(res,self.length)
-        print(self.length)
 
 
     def draw(self,window):

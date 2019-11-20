@@ -22,7 +22,7 @@ bg2 = pygame.image.load(BG_generic_path).convert()
 bg = pygame.transform.scale(bg,(screen_width,screen_height))
 
 #Create scroller and initialising it with a START block
-scroll_win = models.Windows.Scroller((500,screen_height-200),0,200,bg2)
+scroll_win = models.Windows.Scroller((520,screen_height),0,0,bg2)
 scroll_win.blocks.append([models.Blocks.START_Block(20,20)])
 
 #Initialising a variable to track whether a block is being dragged or not
@@ -39,12 +39,36 @@ run = True
 blocks = []
 
 #Placing a test origin IF_block
-origin = models.Blocks.IF_Block(100,100)
-origin_else = models.Blocks.ELSE_Block(300,100)
+#origin = models.Blocks.IF_Block(100,100)
+#origin_else = models.Blocks.ELSE_Block(300,100)
 
-blocks.append(origin)
-blocks.append(origin_else)
+#blocks.append(origin)
+#blocks.append(origin_else)
 
+def rebuild_blocks():
+    global blocks
+    blocks = []
+    blocks.append(models.Blocks.IF_Block(520,20))
+    blocks.append(models.Blocks.ELSE_Block(520,120))
+    blocks.append(models.Blocks.END_BLOCK(520,220))
+    blocks.append(models.Blocks.WHILE_BLOCK(520,320))
+    blocks.append(models.Blocks.MINUS_BLOCK(520,420))
+    blocks.append(models.Blocks.PLUS_BLOCK(520,520))
+    blocks.append(models.Blocks.X_BLOCK(520,620))
+    blocks.append(models.Blocks.DIV_BLOCK(670,20))
+    blocks.append(models.Blocks.PL_BLOCK(670,120))
+    blocks.append(models.Blocks.PR_BLOCK(670,220))
+    blocks.append(models.Blocks.PRINT_BLOCK(670,320))
+    blocks.append(models.Blocks.AFFECTATION_BLOCK(670,420))
+    blocks.append(models.Blocks.A_BLOCK(670,520))
+    blocks.append(models.Blocks.B_BLOCK(670,620))
+    blocks.append(models.Blocks.C_BLOCK(820,20))
+    blocks.append(models.Blocks.D_BLOCK(820,120))
+    blocks.append(models.Blocks.E_BLOCK(820,220))
+    blocks.append(models.Blocks.F_BLOCK(820,320))
+
+
+rebuild_blocks()
 
 def draw_screen():
     """
@@ -169,7 +193,7 @@ while run:
 
     update_dragged_position()
     #Updating the position of dragged blocks
-
+    '''
     is_if = False
     is_else = False
     for i in blocks:
@@ -184,7 +208,11 @@ while run:
         new = models.Blocks.ELSE_Block(300,100)
         blocks.append(new)
     #Adding a new IF_Block if there are none in main, for test purposes
-
+    '''
+    if len(blocks)<18:
+        print(len(blocks))
+        rebuild_blocks()
+        print('Blocks rebuilt')
     draw_screen()
     #Draw the screen
     pygame.display.flip()
