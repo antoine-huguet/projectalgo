@@ -236,7 +236,7 @@ class BlocWriter(pygame.surface.Surface):
         if self.active:
             if event.key == pygame.K_RETURN:
                 # TODO : handle bloc creation
-                print("Create : {}".format(self.text))
+                # print("Create : {}".format(self.text))
                 pos = pygame.mouse.get_pos()
                 newBlock = models.Blocks.INPUT_BLOCK(pos[0],pos[1],self.text)
                 self.text = self.defaultText

@@ -146,10 +146,11 @@ class INPUT_BLOCK(Block):
     def __init__(self,posX,posY,text):
         image = pygame.transform.scale(pygame.image.load(models.config.PRINT_path).convert_alpha(),(204,72)) #This doesn't matter as it is not used.
         super().__init__(image,posX,posY)
+        self.is_movable = True
         self.text = text
         self.textColor = (255,255,255) #White
         self.backgroundColor = (59,103,142) #grey-blue
-        self.fontSize = models.config.fontSize
+        self.fontSize = models.config.printerFontSize
         self.fontName = models.config.fontName
         self.font = pygame.font.Font(self.fontName, self.fontSize) 
 
@@ -161,4 +162,7 @@ class INPUT_BLOCK(Block):
         # Overwrite the existing one
         textDisp = self.font.render(self.text,True,self.textColor,self.backgroundColor)
         textRect = textDisp.get_rect().move(self.x,self.y)
+        self.width = textRect.width 
+        self.height = textRect.height
+        self.rect = textRect
         window.blit(textDisp,textRect)

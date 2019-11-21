@@ -1,5 +1,6 @@
 fontName = 'freesansbold.ttf'
 fontSize = 32
+printerFontSize = 65
 
 screen_width = 960*2
 screen_height = 540*2
