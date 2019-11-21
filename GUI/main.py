@@ -27,7 +27,8 @@ scroll_win = models.Windows.Scroller((700,models.config.screen_height),0,0,bg2)
 scroll_win.blocks.append([models.Blocks.START_Block(20,20)])
 drawer = models.Windows.Block_drawer((300,models.config.screen_height),700,0,bg2,[models.Blocks.IF_Block,models.Blocks.WHILE_BLOCK,models.Blocks.ELSE_Block,models.Blocks.END_BLOCK,
 models.Blocks.PLUS_BLOCK,models.Blocks.MINUS_BLOCK,models.Blocks.DIV_BLOCK,models.Blocks.X_BLOCK,models.Blocks.PL_BLOCK,models.Blocks.PR_BLOCK,
-models.Blocks.EQUAL_BLOCK,models.Blocks.AFFECTATION_BLOCK,models.Blocks.PRINT_BLOCK,models.Blocks.A_BLOCK,models.Blocks.B_BLOCK,models.Blocks.C_BLOCK,
+models.Blocks.EQUAL_BLOCK,models.Blocks.DIF_BLOCK,models.Blocks.SUPL_BLOCK,models.Blocks.SUP_BLOCK,models.Blocks.INFL_BLOCK,models.Blocks.INF_BLOCK,
+models.Blocks.AFFECTATION_BLOCK,models.Blocks.PRINT_BLOCK,models.Blocks.A_BLOCK,models.Blocks.B_BLOCK,models.Blocks.C_BLOCK,
 models.Blocks.D_BLOCK,models.Blocks.E_BLOCK,models.Blocks.F_BLOCK])
 
 #Create global printer
