@@ -167,7 +167,10 @@ while run: #The loop that runs constantly
         elif event.type == cst.KEYDOWN: #The user pressed a key
             newBlock = blocWriter.write(event)
             if newBlock != None: #We have a new user input created bloc
-                drawer.blocks.append(newBlock)
+                blocks.append(newBlock)
+                newBlock.clicked = True
+                is_draging = True
+
 
     update_dragged_position() #Updating the position of dragged blocks
     draw_screen() #Draw the screen
