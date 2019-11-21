@@ -161,4 +161,4 @@ class INPUT_BLOCK(Block):
         # Overwrite the existing one
         textDisp = self.font.render(self.text,True,self.textColor,self.backgroundColor)
         textRect = textDisp.get_rect().move(self.x,self.y)
-        window.blit(self.image,(self.x,self.y))
+        window.blit(textDisp,textRect)
