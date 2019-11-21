@@ -184,9 +184,11 @@ class Block_drawer(Scroller):
         self.blocks = []
 
     def rebuild_blocks(self):
+        surplus = self.blocks[len(self.classes):]
         self.blocks = []
         for i in self.classes:
             self.blocks.append(i(0,0))
+        self.blocks += surplus
 
     def draw(self,window):
         self.rebuild_blocks()
