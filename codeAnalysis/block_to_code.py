@@ -1,5 +1,5 @@
-import Bloc 
-import Blocks
+from Bloc import *
+from Blocks import *
 
 
 def code_executable(block_list):
@@ -77,5 +77,5 @@ def graphic_to_model(blocklist):
             blocklist2.append(row2)
     return blocklist2
 
-def execute_block_code(blocklist):
-    exec(code_utilisateur(graphic_to_model(blocklist)))
+def python_block_code(blocklist):
+    return (code_utilisateur(graphic_to_model(blocklist)))
