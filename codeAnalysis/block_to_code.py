@@ -18,21 +18,19 @@ def code_executable(blocklist):
 
 def code_utilisateur(blocklist):
     code=['from time import sleep\n']
-    L=[]
     t=0
     for row in blocklist:
         for bloc in row:
             code.append(t*'\t')
             code.append(bloc.prefix)
-            if bloc.args[0]!=None:
+            if bloc.args[1]!=None:
                 code.append(bloc.args[1].python())
             if bloc.condition !=None:    
-                code.append(bloc.condition.text)
+                code.append(bloc.condition.python())
             code.append(bloc.suffix)
             #transcription d'une ligne dans l'ordre préfixe::condition::argument::suffixe
             t=t+bloc.tab
-            if bloc.id==3 or bloc.id==4:
-                L.append(bloc.args)
+            if bloc.id==3 or bloc.id==2:
                 code.append('\n sleep(.2) \n display(bloc.args)')
             #mise à jour de la liste des affectations et prints, pause et affichage
         code.append('\n')
@@ -74,7 +72,10 @@ def graphic_to_model(blocklist):
                     pass
                     #row2.append(codeAnalysis.models.Bloc.Bloc(3,args=[row2[i-1].prefix,''.join([a.prefix for a in row[i+1:]])]))
             if isinstance(row[i],GUI.models.Blocks.PRINT_BLOCK):
-                row2.append(codeAnalysis.models.Bloc.Bloc(2,args=[None,codeAnalysis.models.Bloc.Calcul_string(row[i+1].text)]))
+                if isinstance(row[i+1],GUI.models.Blocks.INPUT_BLOCK):
+                    row2.append(codeAnalysis.models.Bloc.Bloc(2,args=[None,codeAnalysis.models.Bloc.Calcul_string(row[i+1].text)]))
+                #else:
+                    #row2.append(codeAnalysis.models.Bloc.Bloc(2,args=[None,codeAnalysis.models.Bloc.Calcul_string(row[i+1].text)]))
             if isinstance(row[i],GUI.models.Blocks.INPUT_BLOCK):
                 row2.append(codeAnalysis.models.Bloc.Calcul_string(row[i].text))
             if isinstance(row[i],GUI.models.Blocks.ELSE_BLOCK):
