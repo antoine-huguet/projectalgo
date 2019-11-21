@@ -3,7 +3,7 @@ from codeAnalysis.models.config import dico_calcul
 
 class Bloc:
         
-    def __init__(self,id,prefix=None,suffix=None,condition=False,args=(None,None)):
+    def __init__(self,id,prefix=None,suffix=None,condition=None,args=(None,None)):
         self.id=id
         self.tab=cfg.tabs[min(id,5)]
         self.prefix=cfg.prefixes[id]
