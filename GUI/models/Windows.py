@@ -31,15 +31,15 @@ class Scroller(pygame.surface.Surface):
                 # If the first block takes other block on it's right
                 line = []
                 for j in self.blocks[i]:
-                    if not isinstance(j,GUI.models.Blocks.SNAP_Block):
+                    if not isinstance(j,GUI.models.Blocks.SNAP_BLOCK):
                         line.append(j)
-                line.append(GUI.models.Blocks.SNAP_Block(0,0))
+                line.append(GUI.models.Blocks.SNAP_BLOCK(0,0))
                 up.append(line)
                 # Only save non snap blocks in the row and if necessary adds one at the end
-            elif not isinstance(self.blocks[i][0],GUI.models.Blocks.SNAP_Block):
+            elif not isinstance(self.blocks[i][0],GUI.models.Blocks.SNAP_BLOCK):
                 up.append([self.blocks[i][0]])
             # If the block does not take side blocks, it is appened
-        up.append([GUI.models.Blocks.SNAP_Block(0,0)])
+        up.append([GUI.models.Blocks.SNAP_BLOCK(0,0)])
         # Adds a snap point below the last block
         self.blocks = up
 

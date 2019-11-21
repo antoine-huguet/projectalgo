@@ -1,16 +1,12 @@
-
+import codeAnalysis.models.config as cfg
 
 class Bloc:
-    prefixes=['if','while','print(','=','else','','','A','B','C','D','E','F','<','<=','>','>=','==','+','*','/','-']
-    suffixes=[':',':',')','',':','']
-    tabs=[1,1,0,0,1,-1,0]
-    dico_calcul={'.':'*','*':'*','/':'/', '%':'%','^':'**', '²':'*2','+':'+','-':'-'}
-    
+        
     def __init__(self,id,tab=None,prefix=None,suffix=None,condition=False,args=(None,None)):
         self.id=id
-        self.tab=tabs[min(id,5)]
-        self.prefix=prefixes[id]
-        self.suffix=suffixes[min(id,5)]
+        self.tab=cfg.tab[min(id,5)]
+        self.prefix=cfg.prefixes[id]
+        self.suffix=cfg.suffixes[min(id,5)]
         if self.id==2:
             self.suffix=str(args[1])+')'
         self.condition=condition
@@ -24,19 +20,21 @@ class Calcul_string(Bloc):
         self.text=text
         self.code=''
         self.value = None
+    
     def python(self):
+        global cfg.dico_calcul
         txt=self.text
         self.code = ''
         for i in range(len(txt)):
-            if txt[i] in Bloc.dico_calcul:
-                self.code+=dico_calcul[txt[i]] 
+            if txt[i] in cfg.dico_calcul:
+                self.code+=cfg.dico_calcul[txt[i]] 
             if 47<ord(txt[i])<58:
                 self.code+=txt[i]
             if i>1 and 47<ord(txt[i-1])<58:
                 self.code+='*'
             if i<len(txt)-1 and ord(txt[i])>64 and ord(txt[i+1])>64:
                 self.code+=txt[i]+'*'
-            elif ord(txt[i])>64 and txt[i] not in dico_calcul:
+            elif ord(txt[i])>64 and txt[i] not in cfg.dico_calcul:
                 self.code+=txt[i]
         return self.code
     def evaluate(self):
