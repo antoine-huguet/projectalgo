@@ -1,4 +1,5 @@
-fontName = 'freesansbold.ttf'
+fontName = 'consola'
+fontpath = 'GUI/resources/fonts/consola.ttf'
 fontSize = 32
 printerFontSize = 65
 

@@ -149,7 +149,7 @@ class Printer(pygame.surface.Surface):
         self.backgroundColor = (0,0,0) #Black
         #Set font - TODO : find a nicer font (to match the block)
         self.fontSize = models.config.fontSize
-        self.fontName = models.config.fontName
+        self.fontName = models.config.fontpath
         self.font = pygame.font.Font(self.fontName, self.fontSize) 
         
         self.text = [] #FIFO to contains both the text and its color
@@ -223,7 +223,7 @@ class BlocWriter(pygame.surface.Surface):
         self.backgroundColor = (0,0,0) #Black
         self.inputBoxColor = (0,0,255) #Blue
         self.fontSize = models.config.fontSize
-        self.fontName = models.config.fontName
+        self.fontName = models.config.fontpath
         self.rect = pygame.Rect(self.xPos,self.yPos,self.size[0],self.size[1])
         # TODO : find a nicer font (to match the bloc)
         self.font = pygame.font.Font(self.fontName, self.fontSize) 
