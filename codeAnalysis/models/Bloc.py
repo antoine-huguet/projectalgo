@@ -1,18 +1,17 @@
 import codeAnalysis.models.config as cfg
+from codeAnalysis.models.config import dico_calcul
 
 class Bloc:
         
-    def __init__(self,id,tab=None,prefix=None,suffix=None,condition=False,args=(None,None)):
+    def __init__(self,id,prefix=None,suffix=None,condition=False,args=(None,None)):
         self.id=id
-        self.tab=cfg.tab[min(id,5)]
+        self.tab=cfg.tabs[min(id,5)]
         self.prefix=cfg.prefixes[id]
         self.suffix=cfg.suffixes[min(id,5)]
         if self.id==2:
             self.suffix=str(args[1])+')'
         self.condition=condition
         self.args=args
-
-
 
 class Calcul_string(Bloc):
     def __init__(self,text):
@@ -22,7 +21,7 @@ class Calcul_string(Bloc):
         self.value = None
     
     def python(self):
-        global cfg.dico_calcul
+        global dico_calcul
         txt=self.text
         self.code = ''
         for i in range(len(txt)):
@@ -37,6 +36,7 @@ class Calcul_string(Bloc):
             elif ord(txt[i])>64 and txt[i] not in cfg.dico_calcul:
                 self.code+=txt[i]
         return self.code
+    
     def evaluate(self):
         exec("self.value="+self.python())
         return self.value

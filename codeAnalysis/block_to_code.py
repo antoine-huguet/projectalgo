@@ -2,7 +2,7 @@ import codeAnalysis.models.Bloc
 import GUI.models.Blocks
 
 
-def code_executable(block_list):
+def code_executable(blocklist):
     code=[]
     t=0
     for row in blocklist:
@@ -57,33 +57,33 @@ def graphic_to_model(blocklist):
         for i in range(len(row)):
             if i<len(row)-1 and isinstance(row[i],GUI.models.Blocks.IF_BLOCK):
                 if isinstance(row[i+1],codeAnalysis.models.Bloc.Calcul_string):
-                    row2.append(codeAnalysis.models.Bloc(0,condition=codeAnalysis.models.Bloc.Calcul_string(row[i+1].text)))
+                    row2.append(codeAnalysis.models.Bloc.Bloc(0,condition=codeAnalysis.models.Bloc.Calcul_string(row[i+1].text)))
                 else:
-                    row2.append(codeAnalysis.models.Bloc(0,condition=''.join([a.prefix for a in row[i+1:]])))
+                    row2.append(codeAnalysis.models.Bloc.Bloc(0,condition=''.join([a.prefix for a in row[i+1:]])))
             if i<len(row)-1 and isinstance(row[i],GUI.models.Blocks.WHILE_BLOCK):
                 if isinstance(row[i+1],codeAnalysis.models.Bloc.Calcul_string):
-                    row2.append(codeAnalysis.models.Bloc(1,condition=codeAnalysis.models.Bloc.Calcul_string(row[i+1].text)))
+                    row2.append(codeAnalysis.models.Bloc.Bloc(1,condition=codeAnalysis.models.Bloc.Calcul_string(row[i+1].text)))
                 else:
-                    row2.append(codeAnalysis.models.Bloc(1,condition=''.join([a.prefix for a in row[i+1:]])))
+                    row2.append(codeAnalysis.models.Bloc.Bloc(1,condition=''.join([a.prefix for a in row[i+1:]])))
             if 0<i<len(row)-1 and isinstance(row[i],GUI.models.Blocks.AFFECTATION_BLOCK):
                 if isinstance(row[i+1],codeAnalysis.models.Bloc.Calcul_string):
-                    row2.append(codeAnalysis.models.Bloc(3,args=[row2[i-1].prefix,codeAnalysis.models.Bloc.Calcul_string(row[i+1].text)]))
+                    row2.append(codeAnalysis.models.Bloc.Bloc(3,args=[row2[i-1].prefix,codeAnalysis.models.Bloc.Calcul_string(row[i+1].text)]))
                 else:
-                    row2.append(codeAnalysis.models.Bloc(3,args=[row2[i-1].prefix,''.join([a.prefix for a in row[i+1:]])]))
+                    row2.append(codeAnalysis.models.Bloc.Bloc(3,args=[row2[i-1].prefix,''.join([a.prefix for a in row[i+1:]])]))
             if isinstance(row[i],GUI.models.Blocks.PRINT_BLOCK):
-                row2.append(codeAnalysis.models.Bloc(2,args=[None,codeAnalysis.models.Bloc.Calcul_string(row[i+1].text)]))
+                row2.append(codeAnalysis.models.Bloc.Bloc(2,args=[None,codeAnalysis.models.Bloc.Calcul_string(row[i+1].text)]))
             if isinstance(row[i],GUI.models.Blocks.ELSE_BLOCK):
-                row2.append(codeAnalysis.models.Bloc(4))
+                row2.append(codeAnalysis.models.Bloc.Bloc(4))
             if isinstance(row[i],GUI.models.Blocks.END_BLOCK):
-                row2.append(codeAnalysis.models.Bloc(5))
+                row2.append(codeAnalysis.models.Bloc.Bloc(5))
             if isinstance(row[i],GUI.models.Blocks.A_BLOCK):
-                row2.append(codeAnalysis.models.Bloc(6))
+                row2.append(codeAnalysis.models.Bloc.Bloc(6))
             if isinstance(row[i],GUI.models.Blocks.B_BLOCK):
-                row2.append(codeAnalysis.models.Bloc(7))
+                row2.append(codeAnalysis.models.Bloc.Bloc(7))
             if isinstance(row[i],GUI.models.Blocks.C_BLOCK):
-                row2.append(codeAnalysis.models.Bloc(8))
+                row2.append(codeAnalysis.models.Bloc.Bloc(8))
             if isinstance(row[i],GUI.models.Blocks.D_BLOCK):
-                row2.append(codeAnalysis.models.Bloc(9))
+                row2.append(codeAnalysis.models.Bloc.Bloc(9))
             blocklist2.append(row2)
     return blocklist2
 
