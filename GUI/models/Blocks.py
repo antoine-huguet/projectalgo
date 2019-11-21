@@ -99,6 +99,32 @@ class EQUAL_BLOCK(Block):
         super().__init__(pygame.transform.scale(pygame.image.load(models.config.EQUAL_path).convert_alpha(),(40,72)),xpos,ypos)
         self.snappoints=['side']
 
+class DIF_BLOCK(Block):
+    def __init__(self,xpos,ypos):
+        super().__init__(pygame.transform.scale(pygame.image.load(models.config.DIF_path).convert_alpha(),(40,72)),xpos,ypos)
+        self.snappoints=['side']
+
+class SUPL_BLOCK(Block):
+    def __init__(self,xpos,ypos):
+        super().__init__(pygame.transform.scale(pygame.image.load(models.config.SUPL_path).convert_alpha(),(40,72)),xpos,ypos)
+        self.snappoints=['side']
+
+class SUP_BLOCK(Block):
+    def __init__(self,xpos,ypos):
+        super().__init__(pygame.transform.scale(pygame.image.load(models.config.SUP_path).convert_alpha(),(40,72)),xpos,ypos)
+        self.snappoints=['side']
+
+class INFL_BLOCK(Block):
+    def __init__(self,xpos,ypos):
+        super().__init__(pygame.transform.scale(pygame.image.load(models.config.INFL_path).convert_alpha(),(40,72)),xpos,ypos)
+        self.snappoints=['side']
+
+class INF_BLOCK(Block):
+    def __init__(self,xpos,ypos):
+        super().__init__(pygame.transform.scale(pygame.image.load(models.config.INF_path).convert_alpha(),(40,72)),xpos,ypos)
+        self.snappoints=['side']
+
+
 #Variables
 class A_BLOCK(Block):
     def __init__(self,xpos,ypos):
