@@ -25,7 +25,7 @@ class Condition():
         '''Recursively write the condition'''
         conditionWritten = ""
         for condition in self.arg:
-            conditionWritten += condition.writeCondition() + type
+            conditionWritten += condition.writeCondition() + self.type
         return conditionWritten
 
     def evaluateCondition(self):
