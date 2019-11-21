@@ -6,6 +6,7 @@ This is a project developped @ **CentraleSupélec** during the coding weeks. It 
 ## How does it work ?
 The backend use *Python* code and the *exec* function to run blocs of code.
 The frontend has been designed usin *Pygames*.
+Check [the requirements file](./REQUIREMENTS.md) for more informations. 
 
 ## Who are we ?
 We are :
