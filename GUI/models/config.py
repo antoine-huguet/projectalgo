@@ -42,6 +42,11 @@ PR_path = './GUI/resources/blocks/pR.png'
 DIV_path = './GUI/resources/blocks/div.png'
 X_path = './GUI/resources/blocks/x.png'
 EQUAL_path = './GUI/resources/blocks/=.png'
+DIF_path = './GUI/resources/blocks/dif.png'
+SUPL_path = './GUI/resources/blocks/supL.png'
+SUP_path = './GUI/resources/blocks/sup.png'
+INFL_path = './GUI/resources/blocks/infL.png'
+INF_path = './GUI/resources/blocks/inf.png'
 
 #Variables
 A_path = './GUI/resources/blocks/A.png'
