@@ -37,7 +37,7 @@ global_printer.addLine("Welcome !",models.config.white)
 #Input zone for text
 blocWriter = models.Windows.BlocWriter((models.config.screen_width-models.config.startPrinter,models.config.heightBlocWriter),models.config.startPrinter,models.config.screen_height-models.config.heightBlocWriter)
 
-run = True #Variable for exiting the program
+run = True
 is_draging = False #Initialising a variable to track whether a block is being dragged or not
 blocks = [] #List of blocks in the main window
 
@@ -63,7 +63,7 @@ def add_tuple(a,b):
     """Quick functions for adding tuples."""
     return(a[0]+b[0],a[1]+b[1])
 
-def check_pick_up_in_scroller(scroller):
+def check_pick_up_in_scroller(scroller,pos):
     """Check if a block is being picked up in the given scroller."""
     for line in scroller.blocks:
         for block in line: #Looking at every blocks in the scroller
@@ -82,7 +82,7 @@ def check_pick_up_in_scroller(scroller):
             elif block.rect.collidepoint(scroller.global_coord_to_local(pos)) and isinstance(block,models.Blocks.START_Block):
                 return True
 
-def check_pick_up_in_drawer(scroller):
+def check_pick_up_in_drawer(scroller,pos):
     """Check if a block is being picked up in the given scroller."""
     for block in scroller.blocks: #Looking at every blocks in the scroller
         if block.rect.collidepoint(scroller.global_coord_to_local(pos)) and block.is_movable:
@@ -95,7 +95,7 @@ def check_pick_up_in_drawer(scroller):
             block.write_pos(add_tuple(scroller.local_coord_to_global(pos),(block.width//2,block.height//2)))
             #Updating the block coordinates to account for the changing frame of reference
 
-def check_pick_up_in_main():
+def check_pick_up_in_main(pos):
     """Check if a block is being picked up in main."""
     global is_draging
     global blocks
@@ -106,7 +106,7 @@ def check_pick_up_in_main():
             block.x,block.y = pos[0] - block.width//2, pos[1] - block.height//2 #Snapping the middle of the block to the cursor
             break #Breaking to avoid picking up multiple blocks
 
-def check_drop_down_in_scroller(scroller):
+def check_drop_down_in_scroller(scroller,pos):
     """Check if a block is being dropped down in a scroller."""
     global is_draging
     global blocks
@@ -140,42 +140,48 @@ def update_dragged_position():
             block.x,block.y = pos[0] - block.width//2, pos[1] - block.height//2
             #The block coordinate are updated so that the middle of the block is under the cursor
 
+def main():
+    '''Basically the main loop'''
+    global run
+    global is_draging
+    while run: #The loop that runs constantly
+        for event in pygame.event.get():
+            #Looking at all event that occured since last frame
+            pos = pygame.mouse.get_pos()
+            #Getting mouse cursor coordinates
+            if event.type == cst.QUIT or event.type == cst.KEYDOWN and event.key == cst.K_ESCAPE:
+                #Quit the game if ESC or the red cross is pressed
+                run = False
+            elif event.type == cst.MOUSEBUTTONDOWN:
+                if event.button == 1: #If the left mouse button is clicked (Rising edge)
+                    blocWriter.setActive(event) #Check whether the user clicked on the input box.
+                    if scroll_win.get_hitbox().collidepoint(pos): #If the cursor is over the scroller
+                        if check_pick_up_in_scroller(scroll_win,pos):
+                            #TODO : code_utilisateur(scroller.blocks)
+                            pass
+                    elif drawer.get_hitbox().collidepoint(pos):
+                        check_pick_up_in_drawer(drawer,pos)
+                elif event.button == 4:
+                    scroll_win.scroll(-20) #If mousewheel up, scroll the scroller
+                elif event.button == 5:
+                    scroll_win.scroll(20)  #If mousewheel is moved, scroll the scroller
+            elif event.type == cst.MOUSEBUTTONUP:
+                if event.button == 1 and is_draging: #If the left mouse button is released (Falling edge)
+                    check_drop_down_in_scroller(scroll_win,pos)
+            elif event.type == cst.KEYDOWN: #The user pressed a key
+                newBlock = blocWriter.write(event)
+                if newBlock != None: #We have a new user input created bloc
+                    blocks.append(newBlock)
+                    newBlock.clicked = True
+                    is_draging = True
 
-while run: #The loop that runs constantly
-    for event in pygame.event.get():
-        #Looking at all event that occured since last frame
-        pos = pygame.mouse.get_pos()
-        #Getting mouse cursor coordinates
-        if event.type == cst.QUIT or event.type == cst.KEYDOWN and event.key == cst.K_ESCAPE:
-            #Quit the game if ESC or the red cross is pressed
-            run = False
-        elif event.type == cst.MOUSEBUTTONDOWN:
-            if event.button == 1: #If the left mouse button is clicked (Rising edge)
-                blocWriter.setActive(event) #Check whether the user clicked on the input box.
-                if scroll_win.get_hitbox().collidepoint(pos): #If the cursor is over the scroller
-                    if check_pick_up_in_scroller(scroll_win):
-                        #TODO : code_utilisateur(scroller.blocks)
-                        pass
-                elif drawer.get_hitbox().collidepoint(pos):
-                    check_pick_up_in_drawer(drawer)
-            elif event.button == 4:
-                scroll_win.scroll(-20) #If mousewheel up, scroll the scroller
-            elif event.button == 5:
-                scroll_win.scroll(20)  #If mousewheel is moved, scroll the scroller
-        elif event.type == cst.MOUSEBUTTONUP:
-            if event.button == 1 and is_draging: #If the left mouse button is released (Falling edge)
-                check_drop_down_in_scroller(scroll_win)
-        elif event.type == cst.KEYDOWN: #The user pressed a key
-            newBlock = blocWriter.write(event)
-            if newBlock != None: #We have a new user input created bloc
-                blocks.append(newBlock)
-                newBlock.clicked = True
-                is_draging = True
 
+        update_dragged_position() #Updating the position of dragged blocks
+        draw_screen() #Draw the screen
+        pygame.display.flip() #Refresh the display
+        clock.tick(30) #Limit framerate to 60
 
-    update_dragged_position() #Updating the position of dragged blocks
-    draw_screen() #Draw the screen
-    pygame.display.flip() #Refresh the display
-    clock.tick(60) #Limit framerate to 60
+    pygame.quit()#Quit the program
 
-pygame.quit()#Quit the program
+if __name__=='__main__':
+    main()
