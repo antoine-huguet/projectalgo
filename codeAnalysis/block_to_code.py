@@ -1,5 +1,5 @@
-from Bloc import *
-from Blocks import *
+import codeAnalysis.models.Bloc
+import GUI.models.Blocks
 
 
 def code_executable(block_list):
@@ -54,11 +54,11 @@ def graphic_to_model(blocklist):
     for row in blocklist:
         row2=[]
         for i in range(len(row)):
-            if row[i].isinstance(IF_BLOCK):
-                row2.append(Bloc(0,condition=Calculstring(row[i+1].text])))
-            if row[i].isinstance(WHILE_BLOCK):
-                row2.append(Bloc(1,condition=Calculstring(row[i+1].text])))
-            if row[i].isinstance(AFFECTATION_BLOCK):
+            if i<len(row)-1 and row[i].isinstance(IF_BLOCK):
+                row2.append(Bloc(0,condition=Calculstring(row[i+1].text)))
+            if i<len(row)-1 and row[i].isinstance(WHILE_BLOCK):
+                row2.append(Bloc(1,condition=Calculstring(row[i+1].text)))
+            if 0<i<len(row)-1 and row[i].isinstance(AFFECTATION_BLOCK):
                 row2.append(Bloc(3,args=[row2[i-1].prefix,Calculstring(row[i+1].text])))
             if row[i].isinstance(PRINT_BLOCK):
                 row2.append(Bloc(2,args=[None,Calculstring(row[i+1].text)]))
