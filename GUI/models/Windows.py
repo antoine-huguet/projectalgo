@@ -140,6 +140,16 @@ class Scroller(pygame.surface.Surface):
                         self.blocks[i].insert(j,item)
                         return
 
+    def get_list(self):
+        res = []
+        for line in self.blocks:
+            L = []
+            for block in line:
+                if not isinstance(block,GUI.models.Blocks.SNAP_BLOCK):
+                    L.append(block)
+            res.append(L)
+        return res
+
 class Printer(pygame.surface.Surface):
     '''A surface used to display lines.'''
     def __init__(self,size,xPos,yPos):
