@@ -1,7 +1,6 @@
 import codeAnalysis.models.Bloc
 import GUI.models.Blocks
 
-
 def code_executable(blocklist):
     code=[]
     t=0
@@ -47,8 +46,6 @@ def display(args):
         else:
             string= str(args[0])+'='+args[1].text
         write_affectation(string)
-
-
 
 def graphic_to_model(blocklist):
     blocklist2=[]
