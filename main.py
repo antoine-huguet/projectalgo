@@ -26,7 +26,7 @@ while run: #The loop that runs constantly
                 if gui.scroll_win.get_hitbox().collidepoint(pos): #If the cursor is over the scroller
                     if gui.check_pick_up_in_scroller(gui.scroll_win,pos):
                         #Run code
-                        exec(btc.code_utilisateur(btc.graphic_to_model(GUI.gui.scroll_win.blocks)))
+                        exec(btc.code_utilisateur(btc.graphic_to_model(GUI.gui.scroll_win.get_list())))
                 elif gui.drawer.get_hitbox().collidepoint(pos):
                     gui.check_pick_up_in_drawer(gui.drawer,pos)
             elif event.button == 4:
