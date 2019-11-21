@@ -72,7 +72,7 @@ def check_pick_up_in_scroller(scroller):
                 block.clicked = True #The block is now being clicked on
                 global is_draging 
                 is_draging = True # The mouse cursor is now draging a block 
-                scroller.remove(block) 
+                scroller.remove(block)
                 blocks.append(block)
                 # Removing the block from the scroller and adding it to the main window
                 block.write_pos(add_tuple(scroller.local_coord_to_global(pos),(block.width//2,block.height//2)))
