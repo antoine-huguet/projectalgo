@@ -44,5 +44,3 @@ class Calcul_string(Bloc):
 
 #argument est une liste qui contient les éventuels arguments du bloc: [nom_variable,valeur] ou [None,printable]
 #tab est la tabulation relative après lecture de ce bloc
-
-
