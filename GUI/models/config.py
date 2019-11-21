@@ -1,5 +1,4 @@
-fontName = 'consola'
-fontpath = 'GUI/resources/fonts/consola.ttf'
+fontPath = 'GUI/resources/fonts/consola.ttf'
 fontSize = 32
 printerFontSize = 65
 

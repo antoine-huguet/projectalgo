@@ -1,6 +1,6 @@
 import pygame
-import models.config
-import models.Blocks
+import GUI.models.config
+import GUI.models.Blocks
 
 class Scroller(pygame.surface.Surface):
     #A class that contains coding blocks and is able
@@ -11,7 +11,7 @@ class Scroller(pygame.surface.Surface):
         # FORMAT :
         # List of all rows
         # Rows are lists of blocks
-        # [ [First row First block, First row second block,..] , [Second row First block,..] ...]
+        # [ [First row First block, First row second block,.] , [Second row First block,.] ..]
         self.length = size[1]
         self.scroll_y = 0 # Storing the amount of y offset due tu scrolling
         self.x = x  # X position of the Scroller in main
@@ -31,26 +31,26 @@ class Scroller(pygame.surface.Surface):
                 # If the first block takes other block on it's right
                 line = []
                 for j in self.blocks[i]:
-                    if not isinstance(j,models.Blocks.SNAP_Block):
+                    if not isinstance(j,GUI.models.Blocks.SNAP_Block):
                         line.append(j)
-                line.append(models.Blocks.SNAP_Block(0,0))
+                line.append(GUI.models.Blocks.SNAP_Block(0,0))
                 up.append(line)
                 # Only save non snap blocks in the row and if necessary adds one at the end
-            elif not isinstance(self.blocks[i][0],models.Blocks.SNAP_Block):
+            elif not isinstance(self.blocks[i][0],GUI.models.Blocks.SNAP_Block):
                 up.append([self.blocks[i][0]])
             # If the block does not take side blocks, it is appened
-        up.append([models.Blocks.SNAP_Block(0,0)])
+        up.append([GUI.models.Blocks.SNAP_Block(0,0)])
         # Adds a snap point below the last block
         self.blocks = up
 
     def update_length(self):
-        res = self.blocks[0][0].y+self.blocks[0][0].height+models.config.y_spacing
+        res = self.blocks[0][0].y+self.blocks[0][0].height+GUI.models.config.y_spacing
         for line in self.blocks:
             max_y_size = 0
             for block in line:
                 if block.height > max_y_size:
                     max_y_size = block.height
-            res+= max_y_size + models.config.y_spacing
+            res+= max_y_size + GUI.models.config.y_spacing
         self.length = max(res,self.length)
 
 
@@ -63,7 +63,7 @@ class Scroller(pygame.surface.Surface):
         # Updating snap points
         self.blocks[0][0].draw(self)
         # Drawing the START block
-        cursorx,cursory = self.blocks[0][0].x, self.blocks[0][0].y+self.blocks[0][0].height+models.config.y_spacing
+        cursorx,cursory = self.blocks[0][0].x, self.blocks[0][0].y+self.blocks[0][0].height+GUI.models.config.y_spacing
         # Set the drawing cursor to the initial position (below start block)
         cursorx_ini = cursorx
         # Saves the X coordinate of the start of rows
@@ -75,13 +75,13 @@ class Scroller(pygame.surface.Surface):
                 block.y = cursory
                 block.draw(self)
                 # Placing block at the cursor
-                cursorx+= block.width + models.config.x_spacing
+                cursorx+= block.width + GUI.models.config.x_spacing
                 # Moving the cursor X-wise
                 if block.height > max_y_size:
                     max_y_size = block.height
             cursorx = cursorx_ini
             # Resetting the X coordinate of the cursor
-            cursory += max_y_size + models.config.y_spacing
+            cursory += max_y_size + GUI.models.config.y_spacing
             # Moving the cursor Y-wise
         window.blit(self,(self.x,self.y),area = pygame.rect.Rect((0,self.scroll_y),self.size))
         #Drawing self onto the given window
@@ -148,8 +148,8 @@ class Printer(pygame.surface.Surface):
         self.size = size #Set size - should not be moved not resized
         self.backgroundColor = (0,0,0) #Black
         #Set font - TODO : find a nicer font (to match the block)
-        self.fontSize = models.config.fontSize
-        self.fontName = models.config.fontpath
+        self.fontSize = GUI.models.config.fontSize
+        self.fontName = GUI.models.config.fontPath
         self.font = pygame.font.Font(self.fontName, self.fontSize) 
         
         self.text = [] #FIFO to contains both the text and its color
@@ -196,16 +196,16 @@ class Block_drawer(Scroller):
         max_y = 0
         l = len(self.blocks)
         while block_cursor<l:
-            if cursorx + models.config.x_spacing_drawer + self.blocks[block_cursor].width < self.size[0]:
+            if cursorx + GUI.models.config.x_spacing_drawer + self.blocks[block_cursor].width < self.size[0]:
                 self.blocks[block_cursor].x = cursorx
                 self.blocks[block_cursor].y = cursory
                 self.blocks[block_cursor].draw(self)
                 if self.blocks[block_cursor].height > max_y:
                     max_y = self.blocks[block_cursor].height
-                cursorx += models.config.x_spacing_drawer + self.blocks[block_cursor].width
+                cursorx += GUI.models.config.x_spacing_drawer + self.blocks[block_cursor].width
                 block_cursor+=1
             else:
-                cursory += max_y + models.config.y_spacing_drawer
+                cursory += max_y + GUI.models.config.y_spacing_drawer
                 cursorx = cursorx_ini
                 max_y = 0
         window.blit(self,(self.x,self.y),area = pygame.rect.Rect((0,self.scroll_y),self.size))
@@ -222,8 +222,8 @@ class BlocWriter(pygame.surface.Surface):
         self.textColor = (255,255,255) #White
         self.backgroundColor = (0,0,0) #Black
         self.inputBoxColor = (0,0,255) #Blue
-        self.fontSize = models.config.fontSize
-        self.fontName = models.config.fontpath
+        self.fontSize = GUI.models.config.fontSize
+        self.fontName = GUI.models.config.fontPath
         self.rect = pygame.Rect(self.xPos,self.yPos,self.size[0],self.size[1])
         # TODO : find a nicer font (to match the bloc)
         self.font = pygame.font.Font(self.fontName, self.fontSize) 
@@ -238,7 +238,7 @@ class BlocWriter(pygame.surface.Surface):
                 # TODO : handle bloc creation
                 # print("Create : {}".format(self.text))
                 pos = pygame.mouse.get_pos()
-                newBlock = models.Blocks.INPUT_BLOCK(pos[0],pos[1],self.text)
+                newBlock = GUI.models.Blocks.INPUT_BLOCK(pos[0],pos[1],self.text)
                 self.text = self.defaultText
                 return newBlock
             elif event.key == pygame.K_BACKSPACE:
