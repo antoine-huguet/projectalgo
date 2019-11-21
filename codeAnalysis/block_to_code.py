@@ -26,8 +26,8 @@ def code_utilisateur(blocklist):
             code.append(bloc.prefix)
             if bloc.args[0]!=None:
                 code.append(bloc.args[1].python())
-            if not code.condition:
-                code.append((bloc.condition).python())
+            if not bloc.condition:
+                code.append(bloc.condition.python())
             code.append(bloc.suffix)
             #transcription d'une ligne dans l'ordre préfixe::condition::argument::suffixe
             t=t+bloc.tab
