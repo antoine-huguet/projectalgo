@@ -10,7 +10,7 @@ def code_executable(blocklist):
             code.append(t*'\t')
             code.append(bloc.prefix)
             code.append(str(bloc.args[1]))
-            code.append((bloc.condition().writeCondition()))
+            code.append((bloc.condition.writeCondition()))
             code.append(bloc.suffix)
             t=t+bloc.tab
             code.append('\n')
@@ -33,7 +33,7 @@ def code_utilisateur(blocklist):
             t=t+bloc.tab
             if bloc.id==3 or bloc.id==4:
                 L.append(bloc.args)
-                code.append('\n time.sleep(.2) \n display(bloc.args)')
+                code.append('\n sleep(.2) \n display(bloc.args)')
             #mise à jour de la liste des affectations et prints, pause et affichage
         code.append('\n')
     return(''.join(code))
