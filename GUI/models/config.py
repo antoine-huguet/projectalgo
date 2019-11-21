@@ -14,8 +14,12 @@ y_spacing = 10
 x_spacing_drawer = 10
 y_spacing_drawer = 15
 
-BG_generic_path = './GUI/resources/backgrounds/generic.png'
+# Colors :
+white = (0,0,0)
+red = (255,0,0)
 
+
+BG_generic_path = './GUI/resources/backgrounds/generic.png'
 
 #Start
 START_path = './GUI/resources/blocks/start.png'

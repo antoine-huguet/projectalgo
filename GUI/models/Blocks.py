@@ -155,7 +155,7 @@ class INPUT_BLOCK(Block):
 
     def __setSize__(self):
         self.height = 72 #Same as other blocks
-        self.width = 15*len(self.text)
+        self.width = 15*len(self.text) #Really arbitrary, might need changing
 
     def draw(self,window):
         # Overwrite the existing one

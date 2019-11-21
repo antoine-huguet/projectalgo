@@ -32,7 +32,7 @@ models.Blocks.D_BLOCK,models.Blocks.E_BLOCK,models.Blocks.F_BLOCK])
 
 #Create global printer
 global_printer = models.Windows.Printer((models.config.screen_width-models.config.startPrinter,models.config.screen_height-models.config.heightBlocWriter),models.config.startPrinter,0)
-global_printer.addLine("Welcome !")
+global_printer.addLine("Welcome !",models.config.white)
 
 #Input zone for text
 blocWriter = models.Windows.BlocWriter((models.config.screen_width-models.config.startPrinter,models.config.heightBlocWriter),models.config.startPrinter,models.config.screen_height-models.config.heightBlocWriter)
@@ -43,6 +43,11 @@ blocks = [] #List of blocks in the main window
 
 clock = pygame.time.Clock() #Pygame clock to limit framerate
 
+def writeAffection(line):
+    global_printer.addLine(line,models.config.white)
+
+def writePrint(line):
+    global_printer.addLine(line,models.config.red)
 
 def draw_screen():
     """Drawing all items in order (bg to fg)."""
@@ -133,7 +138,6 @@ def update_dragged_position():
             pos = pygame.mouse.get_pos()
             block.x,block.y = pos[0] - block.width//2, pos[1] - block.height//2
             #The block coordinate are updated so that the middle of the block is under the cursor
-
 
 
 while run: #The loop that runs constantly

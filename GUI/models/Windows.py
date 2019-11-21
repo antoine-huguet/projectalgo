@@ -144,32 +144,32 @@ class Printer(pygame.surface.Surface):
     '''A surface used to display lines.'''
     def __init__(self,size,xPos,yPos):
         super().__init__(size)
-        self.xPos = xPos
-        self.yPos = yPos
-        self.size = size #Set size - should not be moved
-        self.textColor = (255,255,255) #White
+        self.xPos = xPos; self.yPos = yPos
+        self.size = size #Set size - should not be moved not resized
         self.backgroundColor = (0,0,0) #Black
+        #Set font / TODO : find a nicer font (to match the block)
         self.fontSize = models.config.fontSize
         self.fontName = models.config.fontName
-        # TODO : find a nicer font (to match the bloc)
         self.font = pygame.font.Font(self.fontName, self.fontSize) 
-        self.text = [] #We use the list as a file, which is empty at first
+        
+        self.text = [] #FIFO to contains both the text and its color
         self.maxLine = 10 #We won't display more than maxLine lines at the same time
         self.xOffSet = 15 #Off set the text from the side of the window
 
     def draw(self,window):
         self.fill((0,0,0)) #Get a whole black background
-        numberOfLines = len(self.text) # <=10
+        numberOfLines = len(self.text) # <=self.maxLine
         yPos = self.xOffSet #So that the first line is at a corner
-        for line in self.text:
-            textDisp = self.font.render('> '+line,True,self.textColor)
+        for entry in self.text:
+            (line,color)=entry
+            textDisp = self.font.render('> '+line,True,color)
             textRect = textDisp.get_rect().move(self.xOffSet,yPos) #Create and move rect to the position required
             self.blit(textDisp,textRect)
             yPos += self.fontSize + self.xOffSet #We move down to the next line
         window.blit(self,(self.xPos,self.yPos))
 
-    def addLine(self,line):
-        self.text.append(line)
+    def addLine(self,line,color):
+        self.text.append((line,color))
         if len(self.text)>self.maxLine:
             self.text.pop(0)
         #We use text as a FIFO
