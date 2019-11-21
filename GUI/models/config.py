@@ -15,7 +15,7 @@ x_spacing_drawer = 10
 y_spacing_drawer = 15
 
 # Colors :
-white = (0,0,0)
+white = (255,255,255)
 red = (255,0,0)
 
 
