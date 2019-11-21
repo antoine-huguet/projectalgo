@@ -25,8 +25,9 @@ def code_utilisateur(blocklist):
             code.append(t*'\t')
             code.append(bloc.prefix)
             if bloc.args[0]!=None:
-                code.append(str(bloc.args[1]))
-            code.append((bloc.condition().writeCondition()))
+                code.append(bloc.args[1].python())
+            if not code.condition:
+                code.append((bloc.condition).python())
             code.append(bloc.suffix)
             #transcription d'une ligne dans l'ordre préfixe::condition::argument::suffixe
             t=t+bloc.tab
@@ -55,11 +56,20 @@ def graphic_to_model(blocklist):
         row2=[]
         for i in range(len(row)):
             if i<len(row)-1 and row[i].isinstance(IF_BLOCK):
-                row2.append(Bloc(0,condition=Calculstring(row[i+1].text)))
+                if isinstance(row[i+1],Calculstring):
+                    row2.append(Bloc(0,condition=Calculstring(row[i+1].text)))
+                else:
+                    row2.append(Bloc(0,condition=''.join([a.prefix for a in row[i+1:]])))
             if i<len(row)-1 and row[i].isinstance(WHILE_BLOCK):
-                row2.append(Bloc(1,condition=Calculstring(row[i+1].text)))
+                if isinstance(row[i+1],Calculstring):
+                    row2.append(Bloc(1,condition=Calculstring(row[i+1].text)))
+                else:
+                    row2.append(Bloc(1,condition=''.join([a.prefix for a in row[i+1:]])))
             if 0<i<len(row)-1 and row[i].isinstance(AFFECTATION_BLOCK):
-                row2.append(Bloc(3,args=[row2[i-1].prefix,Calculstring(row[i+1].text])))
+                if isinstance(row[i+1],Calculstring):
+                    row2.append(Bloc(3,args=[row2[i-1].prefix,Calculstring(row[i+1].text)]))
+                else:
+                    row2.append(Bloc(3,args=[row2[i-1].prefix,''.join([a.prefix for a in row[i+1:]])]))
             if row[i].isinstance(PRINT_BLOCK):
                 row2.append(Bloc(2,args=[None,Calculstring(row[i+1].text)]))
             if row[i].isinstance(ELSE_BLOCK):
