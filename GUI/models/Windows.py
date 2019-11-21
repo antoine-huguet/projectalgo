@@ -147,7 +147,7 @@ class Printer(pygame.surface.Surface):
         self.xPos = xPos; self.yPos = yPos
         self.size = size #Set size - should not be moved not resized
         self.backgroundColor = (0,0,0) #Black
-        #Set font / TODO : find a nicer font (to match the block)
+        #Set font - TODO : find a nicer font (to match the block)
         self.fontSize = models.config.fontSize
         self.fontName = models.config.fontName
         self.font = pygame.font.Font(self.fontName, self.fontSize) 
@@ -158,7 +158,6 @@ class Printer(pygame.surface.Surface):
 
     def draw(self,window):
         self.fill((0,0,0)) #Get a whole black background
-        numberOfLines = len(self.text) # <=self.maxLine
         yPos = self.xOffSet #So that the first line is at a corner
         for entry in self.text:
             (line,color)=entry
@@ -175,9 +174,7 @@ class Printer(pygame.surface.Surface):
         #We use text as a FIFO
 
 class Block_drawer(Scroller):
-    '''
-    This class is a scrollable window that stores blocks 
-    '''
+    '''This class is a scrollable window that stores blocks.'''
     def __init__(self,size,x,y,bg,classes):
         super().__init__(size,x,y,bg)
         self.classes = classes
