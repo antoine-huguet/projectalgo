@@ -10,10 +10,14 @@ Check [the requirements file](./REQUIREMENTS.md) for more informations.
 
 ## Who are we ?
 We are :
-- Antoine HUGUET
-- Rémi HEITZ
-- Youssef IRHBOULA
+- [Antoine HUGUET](https://github.com/antoine-huguet)
+- [Rémi HEITZ](https://github.com/remiUP)
+- [Youssef IRHBOULA](https://github.com/yoyotir)
 
 ## What will happend next ?
 
 We use [Trello](https://trello.com/b/DLjSTZcU/projetalgo) to communicate on the project.
+
+## Presentation
+
+An overview of this project is available as PDF presentation [here](./presentation.pdf)
