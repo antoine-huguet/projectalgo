@@ -179,6 +179,7 @@ class INPUT_BLOCK(Block):
         self.fontSize = GUI.models.config.printerFontSize
         self.fontName = GUI.models.config.fontPath
         self.font = pygame.font.Font(self.fontName, self.fontSize) 
+        self.snappoints=['side']
 
     def __setSize__(self):
         self.height = 72 #Same as other blocks
