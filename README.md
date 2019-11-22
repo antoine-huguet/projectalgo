@@ -31,4 +31,4 @@ An overview of this project is available as PDF presentation [here](./presentati
 ## Want to contribute ?
 
 Please do !
-But first make sure to read our [code of conduct](./CODE_OF_CONDUCT.md) and check the [contributing](./CONTRIBUTING.md) files.
+But first make sure to read our [code of conduct](./CODE_OF_CONDUCT.md) and check the [contributing](./CONTRIBUTING.md) file.
