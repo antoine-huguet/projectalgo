@@ -15,6 +15,10 @@ ligne=[[gifblock,calcul],[gbloc.A_BLOCK(0,0),gbloc.AFFECTATION_BLOCK(0,0),gbloc.
 
 ten=mbloc.Calcul_string("10")
 
-print(mbloc.Bloc(2,args=(None,ten)).suffix)
+#print(mbloc.Bloc(2,args=(None,ten)).suffix)
 
 #print(btc.code_utilisateur(a))
+
+mifbloc=mbloc.Bloc(2)
+
+print(mifbloc.tab)
