@@ -17,3 +17,7 @@ We are :
 ## What will happend next ?
 
 We use [Trello](https://trello.com/b/DLjSTZcU/projetalgo) to communicate on the project.
+
+## Presentation
+
+An overview of this project is available as PDF presentation [here](./presentation.pdf)
