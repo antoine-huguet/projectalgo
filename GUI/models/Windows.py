@@ -3,8 +3,8 @@ import GUI.models.config
 import GUI.models.Blocks
 
 class Scroller(pygame.surface.Surface):
-    #A class that contains coding blocks and is able
-    #to scroll up and down
+    '''A class that contains coding blocks and is able
+       to scroll up and down'''
     def __init__(self,size,x,y,bg):
         super().__init__((size[0],2000))
         self.blocks = [] # List of blocks
@@ -33,6 +33,7 @@ class Scroller(pygame.surface.Surface):
                 for j in self.blocks[i]:
                     if not isinstance(j,GUI.models.Blocks.SNAP_BLOCK):
                         line.append(j)
+                # This loop only keeps non-SNAP_BLOCK instances in the line
                 line.append(GUI.models.Blocks.SNAP_BLOCK(0,0))
                 up.append(line)
                 # Only save non snap blocks in the row and if necessary adds one at the end
@@ -44,17 +45,22 @@ class Scroller(pygame.surface.Surface):
         self.blocks = up
 
     def update_length(self):
+        """Calculates the length needed to display all blocks in the scroller"""
         res = self.blocks[0][0].y+self.blocks[0][0].height+GUI.models.config.y_spacing
+        # begins with the START block and adds its height plus the Y-spacing margin
         for line in self.blocks:
             max_y_size = 0
             for block in line:
                 if block.height > max_y_size:
                     max_y_size = block.height
             res+= max_y_size + GUI.models.config.y_spacing
+        # For each block we add its height and the Y spacing margin
         self.length = max(res,self.length)
+        # The attribute length is updated with the new length, and can only be increased
 
 
     def draw(self,window):
+        '''Draws the scroller'''
         self.update_length()
         # Draws self to a given window
         self.blit(self.bg,(0,0))
@@ -87,13 +93,13 @@ class Scroller(pygame.surface.Surface):
         #Drawing self onto the given window
     
     def scroll(self,amount):
-        # Changes the scrolling amount if in range of the maximum scrolling
+        '''Changes the scrolling amount if in range of the maximum scrolling'''
         if 0<=self.scroll_y + amount < (self.length-self.size[1]):
             self.scroll_y += amount
     
     def remove(self,element):
-        # Removes a specific element from self.blocks
-        # If there are other blocs on the row, they are removed
+        ''' Removes a specific element from self.blocks
+         If there are other blocs on the row, they are removed'''
         for i in range(len(self.blocks)):
             if self.blocks[i][0]==element:
                 # If the target is the first of a row, it is removed entirely
@@ -105,47 +111,53 @@ class Scroller(pygame.surface.Surface):
                 break
 
     def global_coord_to_local(self,pos,y=None):
-        # Translate global coordinates to local coordinates
+        '''Translate global coordinates to local coordinates'''
         if type(pos)==tuple:
             return (pos[0]-self.x,pos[1]-self.y+self.scroll_y)
         elif type(pos)==int and type(y)==int:
             return (pos-self.x,y-self.y+self.scroll_y)
 
     def local_coord_to_global(self,pos,y=None):
-        # Translate local coordinates to global coordinates
+        '''Translate local coordinates to global coordinates'''
         if type(pos)==tuple:
             return (pos[0]+self.x,pos[1]+self.y-self.scroll_y)
         elif type(pos)==int and type(y)==int:
             return (pos+self.x,y+self.y-self.scroll_y)
 
     def get_hitbox(self):
-        # Returns a pygame.rect representing the hitbox of self
+        '''Returns a pygame.rect representing the hitbox of self'''
         return self.get_rect().move(self.x,self.y)
 
     def replace(self, target, item):
-        # Replace a target by a given item in self.blocks
+        '''Replace a target by a given item in self.blocks'''
         for i in range(len(self.blocks)):
             for j in range(len(self.blocks[i])):
                 if self.blocks[i][j]==target:
                     self.blocks[i][j] = item
     
     def insert(self, target, item):
+        """Inserts an item before a given target"""
         for i,line in enumerate(self.blocks):
             for j,block in enumerate(line):
+                # Iterates over every block in self.blocks
                 if block == target:
                     if j==0:
+                        # Inserts a new row if the target is first of its row
                         self.blocks.insert(i,[item])
                         return
                     else:
+                        # Inserts a new item in the row otherwise
                         self.blocks[i].insert(j,item)
                         return
 
     def get_list(self):
+        """Returns self.blocks without any SNAP_BLOCK"""
         res = []
         for line in self.blocks:
             L = []
             for block in line:
                 if not isinstance(block,GUI.models.Blocks.SNAP_BLOCK):
+                    # Only keeps non SNAP_BLOCK instances
                     L.append(block)
             res.append(L)
         return res
@@ -167,6 +179,7 @@ class Printer(pygame.surface.Surface):
         self.xOffSet = 15 #Off set the text from the side of the window
 
     def draw(self,window):
+        '''Draws the Printer'''
         self.fill((0,0,0)) #Get a whole black background
         yPos = self.xOffSet #So that the first line is at a corner
         for entry in self.text:
@@ -178,6 +191,7 @@ class Printer(pygame.surface.Surface):
         window.blit(self,(self.xPos,self.yPos))
 
     def addLine(self,line,color):
+        '''Adds a line to the display'''
         self.text.append((line,color))
         if len(self.text)>self.maxLine:
             self.text.pop(0)
@@ -192,36 +206,41 @@ class Block_drawer(Scroller):
         self.rebuild_blocks()
 
     def rebuild_blocks(self):
-        surplus = self.blocks[len(self.classes):]
+        """Rebuilds the list of blocks"""
         self.blocks = []
         for i in self.classes:
             self.blocks.append(i(0,0))
-        self.blocks += surplus
+            # self.blocks is wiped and we use self.classes to build new instances of each block
 
     def draw(self,window,update=False):
-        if update:
-            self.blit(self.bg,(0,0))
-            self.rebuild_blocks()
-            cursorx,cursory = 20,20
-            cursorx_ini = 20
-            block_cursor = 0
-            max_y = 0
+        '''Draws the drawer to the window'''
+        if update: # If we need to updated the display
+            self.blit(self.bg,(0,0)) # Displays the background first
+            self.rebuild_blocks() # Reuilds the blocks
+            cursorx,cursory = 20,20 # Initialises the cursor for drawing
+            cursorx_ini = 20 # Saves the column X position
+            block_cursor = 0 # Keeps track of the current block being displayed
+            max_y = 0 # Saves the maximum height for each row in order to have proper spacing
             l = len(self.blocks)
             while block_cursor<l:
                 if cursorx + GUI.models.config.x_spacing_drawer + self.blocks[block_cursor].width < self.size[0]:
+                    # If there is space to draw a block on the current row
                     self.blocks[block_cursor].x = cursorx
                     self.blocks[block_cursor].y = cursory
                     self.blocks[block_cursor].draw(self)
+                    # Block is drawn
                     if self.blocks[block_cursor].height > max_y:
                         max_y = self.blocks[block_cursor].height
                     cursorx += GUI.models.config.x_spacing_drawer + self.blocks[block_cursor].width
                     block_cursor+=1
+                    # Updates the cursors
                 else:
                     cursory += max_y + GUI.models.config.y_spacing_drawer
                     cursorx = cursorx_ini
                     max_y = 0
-        
+                    # Puts the cursor on a new row
         window.blit(self,(self.x,self.y),area = pygame.rect.Rect((0,self.scroll_y),self.size))
+        # Draws the drawer onto the screen
 
 
 class BlocWriter(pygame.surface.Surface):
