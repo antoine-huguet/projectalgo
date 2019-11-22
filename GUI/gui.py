@@ -56,7 +56,6 @@ def check_pick_up_in_scroller(scroller,pos):
     """Check if a block is being picked up in the given scroller."""
     for line in scroller.blocks:
         for block in line: #Looking at every blocks in the scroller
-            print(type(block))
             if block.rect.collidepoint(scroller.global_coord_to_local(pos)) and block.is_movable:
                 #If the mouse is over the block and the block is movable
                 block.clicked = True #The block is now being clicked on

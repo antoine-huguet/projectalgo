@@ -48,7 +48,6 @@ while run: #The loop that runs constantly
                 gui.blocks.append(newBlock)
                 newBlock.clicked = True
                 gui.is_draging = True
-    print(clock.get_fps())
     gui.update_dragged_position() #Updating the position of dragged gui.blocks
     gui.draw_screen(redraw) #Draw the screen
     pygame.display.flip() #Refresh the display
