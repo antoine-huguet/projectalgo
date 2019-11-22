@@ -10,9 +10,9 @@ Check [the requirements file](./REQUIREMENTS.md) for more informations.
 
 ## Who are we ?
 We are :
-- Antoine HUGUET
-- Rémi HEITZ
-- Youssef IRHBOULA
+- [Antoine HUGUET](https://github.com/antoine-huguet)
+- [Rémi HEITZ](https://github.com/remiUP)
+- [Youssef IRHBOULA](https://github.com/yoyotir)
 
 ## What will happend next ?
 
