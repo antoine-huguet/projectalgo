@@ -32,6 +32,8 @@ class TestStringMethods(unittest.TestCase):
         ''' 
         self.assertEqual(code_utilisateur(self.blocklist),result)
         
+#on vérifie que .python() tranforme bien 'b²-4ac' en 'b**2 - 4*a*c'
+#on vérifie que l'algorithme écrit en backend blocks à la main et défini dans blocklist donne le bon code python correspondant et le bon code utilisateur
 
 if __name__ == '__main__':
     unittest.main()

@@ -14,6 +14,7 @@ class Bloc:
         self.args=args
 
 class Calcul_string(Bloc):
+    '''blocs backend correspondant au input'''
     def __init__(self,text):
         super().__init__(6)
         self.text=text
@@ -21,6 +22,7 @@ class Calcul_string(Bloc):
         self.value = None
     
     def python(self):
+        '''corrige la syntaxe du texte utilisateur pour qu'elle soit valable en calcul python'''
         global dico_calcul
         txt=self.text
         self.code = ''
@@ -38,6 +40,7 @@ class Calcul_string(Bloc):
         return self.code
     
     def evaluate(self):
+        '''execute le calcul python et garde en mémoire son évaluation'''
         exec("self.value="+self.python())
         return self.value
 

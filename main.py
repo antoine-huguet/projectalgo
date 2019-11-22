@@ -31,12 +31,12 @@ while run: #The loop that runs constantly
                         #The condition above returns True if the block "START" is clicked, and false otherwise
                         #It also detects if a block is picked up and handles all the necessary actions to make it happen 
                         #Run code
-                        print(btc.code_utilisateur(btc.graphic_to_model(GUI.gui.scroll_win.get_list()))[0])
-                        for j in btc.code_utilisateur(btc.graphic_to_model(GUI.gui.scroll_win.get_list()))[1]:
-                            btc.display(j)
-                elif gui.drawer.get_hitbox().collidepoint(pos): #If the cursor is over the block drawer
-                    gui.check_pick_up_in_drawer(gui.drawer,pos) #Check and handle block pickups
-                    redraw = True #If a block is taken, drawer.blocks need to be rebuilt
+                        for line in (btc.code_utilisateur(btc.graphic_to_model(GUI.gui.scroll_win.get_list()))[0]).split('\n'):
+                            gui.writeAffection(line)
+                        #print(btc.code_utilisateur(btc.graphic_to_model(GUI.gui.scroll_win.get_list()))[1])
+                elif gui.drawer.get_hitbox().collidepoint(pos):
+                    gui.check_pick_up_in_drawer(gui.drawer,pos)
+                    redraw = True
             elif event.button == 4:
                 gui.scroll_win.scroll(-20) #If mousewheel up, scroll the scroller
             elif event.button == 5:
