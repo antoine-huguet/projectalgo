@@ -30,25 +30,25 @@ class Block():
 ## --- All blocks
 
 #Start
-class START_Block(Block):
+class START_BLOCK(Block):
     def __init__(self,xpos,ypos):
         super().__init__(pygame.transform.scale(pygame.image.load(GUI.models.config.START_path).convert_alpha(),(204,72)),xpos,ypos )
         self.is_movable = False
         self.snappoints = ['below']
 
 #Snap
-class SNAP_Block(Block):
+class SNAP_BLOCK(Block):
     def __init__(self,xpos,ypos):
         super().__init__(pygame.transform.scale(pygame.image.load(GUI.models.config.SNAP_path).convert_alpha(),(72,72)),xpos,ypos)
         self.is_movable = False
 
 #Controle
-class IF_Block(Block):
+class IF_BLOCK(Block):
     def __init__(self,xpos,ypos):
         super().__init__(pygame.transform.scale(pygame.image.load(GUI.models.config.IF_path).convert_alpha(),(100,72)),xpos,ypos)
         self.snappoints=['below','side']
 
-class ELSE_Block(Block):
+class ELSE_BLOCK(Block):
     def __init__(self,xpos,ypos):
         super().__init__(pygame.transform.scale(pygame.image.load(GUI.models.config.ELSE_path).convert_alpha(),(163,72)),xpos,ypos)
         self.snappoints=['below']

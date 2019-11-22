@@ -25,7 +25,8 @@ while run: #The loop that runs constantly
                 gui.blocWriter.setActive(event) #Check whether the user clicked on the input box.
                 if gui.scroll_win.get_hitbox().collidepoint(pos): #If the cursor is over the scroller
                     if gui.check_pick_up_in_scroller(gui.scroll_win,pos):
-                        exec(btc.code_utilisateur(btc.graphic_to_model(GUI.gui.scroll_win.blocks)))
+                        #Run code
+                        print(btc.code_utilisateur(btc.graphic_to_model(GUI.gui.scroll_win.get_list())))
                 elif gui.drawer.get_hitbox().collidepoint(pos):
                     gui.check_pick_up_in_drawer(gui.drawer,pos)
             elif event.button == 4:
