@@ -15,6 +15,7 @@ def code_executable(blocklist):
             code.append(bloc.suffix)
             t=t+bloc.tab
             code.append('\n')
+            #transcription d'une ligne dans l'ordre préfixe::condition::argument::suffixe puis mise à jour de la tabulation
     return(''.join(code))
 
 def code_utilisateur(blocklist):
@@ -62,24 +63,24 @@ def graphic_to_model(blocklist):
                     row2.append(a)
                 else:
                     pass
-                    #row2.append(codeAnalysis.models.Bloc.Bloc(0,condition=''.join([a.prefix for a in row[i+1:]])))
+                    # ADDITIONAL FEATURE row2.append(codeAnalysis.models.Bloc.Bloc(0,condition=''.join([a.prefix for a in row[i+1:]])))
             if i<len(row)-1 and isinstance(row[i],GUI.models.Blocks.WHILE_BLOCK):
                 if isinstance(row[i+1],GUI.models.Blocks.INPUT_BLOCK):
                     row2.append(codeAnalysis.models.Bloc.Bloc(1,condition=codeAnalysis.models.Bloc.Calcul_string(row[i+1].text)))
                 else:
                     pass
-                    #row2.append(codeAnalysis.models.Bloc.Bloc(1,condition=''.join([a.prefix for a in row[i+1:]])))
+                    # ADDITIONAL FEATURE row2.append(codeAnalysis.models.Bloc.Bloc(1,condition=''.join([a.prefix for a in row[i+1:]])))
             if 0<i<len(row)-1 and isinstance(row[i],GUI.models.Blocks.AFFECTATION_BLOCK):
                 if isinstance(row[i+1],GUI.models.Blocks.INPUT_BLOCK):
                     row2.append(codeAnalysis.models.Bloc.Bloc(3,args=[row2[i-1].prefix,codeAnalysis.models.Bloc.Calcul_string(row[i+1].text)]))
                 else:
                     pass
-                    #row2.append(codeAnalysis.models.Bloc.Bloc(3,args=[row2[i-1].prefix,''.join([a.prefix for a in row[i+1:]])]))
+                    # ADDITIONAL FEATURE row2.append(codeAnalysis.models.Bloc.Bloc(3,args=[row2[i-1].prefix,''.join([a.prefix for a in row[i+1:]])]))
             if isinstance(row[i],GUI.models.Blocks.PRINT_BLOCK):
                 if isinstance(row[i+1],GUI.models.Blocks.INPUT_BLOCK):
                     row2.append(codeAnalysis.models.Bloc.Bloc(2,args=[None,codeAnalysis.models.Bloc.Calcul_string(row[i+1].text)]))
                 #else:
-                    #row2.append(codeAnalysis.models.Bloc.Bloc(2,args=[None,codeAnalysis.models.Bloc.Calcul_string(row[i+1].text)]))
+                    # ADDITIONAL FEATURE row2.append(codeAnalysis.models.Bloc.Bloc(2,args=[None,codeAnalysis.models.Bloc.Calcul_string(row[i+1].text)]))
             if isinstance(row[i],GUI.models.Blocks.INPUT_BLOCK):
                 row2.append(codeAnalysis.models.Bloc.Calcul_string(row[i].text))
             if isinstance(row[i],GUI.models.Blocks.ELSE_BLOCK):
@@ -96,6 +97,9 @@ def graphic_to_model(blocklist):
                 row2.append(codeAnalysis.models.Bloc.Bloc(9))
             ##les différents isinstance permettent de déterminer le type de bloc frontend afin d'ajouter à la ligne le bon type de bloc backend
         blocklist2.append(row2)
+
+
+        #Les ADDITIONAL FEATURES PERMETTENT DE GERER LES CALCULS PAR BLOCS PLUTOT QU'AVEC Calculstring
     return blocklist2
 
 def python_block_code(blocklist):
