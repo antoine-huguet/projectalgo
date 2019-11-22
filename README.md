@@ -1,4 +1,4 @@
-# Algorithm project
+# Algorithmic project
 
 ## What is it ?
 This is a project developped @ **CentraleSupélec** during the coding weeks. It is a a project designed to help people learn algorithmic and programming with an intuitive GUI.
