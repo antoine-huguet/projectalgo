@@ -36,13 +36,16 @@ while run: #The loop that runs constantly
                         #print(code)
                         old_stdout = sys.stdout # Memorize the default stdout stream
                         sys.stdout = buffer = io.StringIO()
-                        exec(code)
-                        sys.stdout = old_stdout
-                        whatWasPrinted = buffer.getvalue()
-                        toPrint = whatWasPrinted.split('\n')
-                        for i in toPrint:
-                            if i:
-                                GUI.gui.global_printer.addLine(i,GUI.models.config.white)
+                        try:
+                            exec(code)
+                            sys.stdout = old_stdout
+                            whatWasPrinted = buffer.getvalue()
+                            toPrint = whatWasPrinted.split('\n')
+                            for i in toPrint:
+                                if i:
+                                    GUI.gui.global_printer.addLine(i,GUI.models.config.white)
+                        except Exception as e: 
+                            GUI.gui.global_printer.addLine(str(e),GUI.models.config.red)
                 elif gui.drawer.get_hitbox().collidepoint(pos):
                     gui.check_pick_up_in_drawer(gui.drawer,pos)
                     redraw = True

@@ -15,7 +15,7 @@ bg2 = pygame.image.load(GUI.models.config.BG_generic_path).convert()
 #Create scroller and initialising it with a START block
 scroll_win = GUI.models.Windows.Scroller((700,GUI.models.config.screen_height),0,0,bg2)
 scroll_win.blocks.append([GUI.models.Blocks.START_BLOCK(20,20)])
-drawer = GUI.models.Windows.Block_drawer((300,GUI.models.config.screen_height),700,0,bg2,[GUI.models.Blocks.IF_BLOCK,GUI.models.Blocks.WHILE_BLOCK,GUI.models.Blocks.ELSE_BLOCK,GUI.models.Blocks.END_BLOCK,
+drawer = GUI.models.Windows.Block_drawer((300,GUI.models.config.screen_height),700,0,pygame.transform.flip(bg2, True, False),[GUI.models.Blocks.IF_BLOCK,GUI.models.Blocks.WHILE_BLOCK,GUI.models.Blocks.ELSE_BLOCK,GUI.models.Blocks.END_BLOCK,
 GUI.models.Blocks.PLUS_BLOCK,GUI.models.Blocks.MINUS_BLOCK,GUI.models.Blocks.DIV_BLOCK,GUI.models.Blocks.X_BLOCK,GUI.models.Blocks.PL_BLOCK,GUI.models.Blocks.PR_BLOCK,
 GUI.models.Blocks.EQUAL_BLOCK,GUI.models.Blocks.DIF_BLOCK,GUI.models.Blocks.SUPL_BLOCK,GUI.models.Blocks.SUP_BLOCK,GUI.models.Blocks.INFL_BLOCK,GUI.models.Blocks.INF_BLOCK,
 GUI.models.Blocks.AFFECTATION_BLOCK,GUI.models.Blocks.PRINT_BLOCK,GUI.models.Blocks.A_BLOCK,GUI.models.Blocks.B_BLOCK,GUI.models.Blocks.C_BLOCK,
