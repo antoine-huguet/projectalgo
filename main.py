@@ -6,6 +6,10 @@ import GUI.models.Blocks
 import GUI.models.Windows
 import GUI.models.config
 import codeAnalysis.block_to_code as btc
+import codeProcessing as cp
+import sys
+import io
+
 pygame.init()
 
 pygame.display.set_caption('Game')
@@ -28,12 +32,17 @@ while run: #The loop that runs constantly
                 gui.blocWriter.setActive(event) #Check whether the user clicked on the input box.
                 if gui.scroll_win.get_hitbox().collidepoint(pos): #If the cursor is over the scroller
                     if gui.check_pick_up_in_scroller(gui.scroll_win,pos): 
-                        #The condition above returns True if the block "START" is clicked, and false otherwise
-                        #It also detects if a block is picked up and handles all the necessary actions to make it happen 
-                        #Run code
-                        for line in (btc.code_utilisateur(btc.graphic_to_model(GUI.gui.scroll_win.get_list()))[0]).split('\n'):
-                            gui.writeAffection(line)
-                        #print(btc.code_utilisateur(btc.graphic_to_model(GUI.gui.scroll_win.get_list()))[1])
+                        code =cp.listBlock_to_code(gui.scroll_win.get_list())
+                        #print(code)
+                        old_stdout = sys.stdout # Memorize the default stdout stream
+                        sys.stdout = buffer = io.StringIO()
+                        exec(code)
+                        sys.stdout = old_stdout
+                        whatWasPrinted = buffer.getvalue()
+                        toPrint = whatWasPrinted.split('\n')
+                        for i in toPrint:
+                            if i:
+                                GUI.gui.global_printer.addLine(i,GUI.models.config.white)
                 elif gui.drawer.get_hitbox().collidepoint(pos):
                     gui.check_pick_up_in_drawer(gui.drawer,pos)
                     redraw = True
