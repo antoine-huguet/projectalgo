@@ -17,7 +17,9 @@ C=0
 D=0
 
 while run: #The loop that runs constantly
+    redraw = False
     for event in pygame.event.get():
+        
         #Looking at all event that occured since last frame
         pos = pygame.mouse.get_pos()
         #Getting mouse cursor coordinates
@@ -35,6 +37,7 @@ while run: #The loop that runs constantly
                         #print(btc.code_utilisateur(btc.graphic_to_model(GUI.gui.scroll_win.get_list()))[1])
                 elif gui.drawer.get_hitbox().collidepoint(pos):
                     gui.check_pick_up_in_drawer(gui.drawer,pos)
+                    redraw = True
             elif event.button == 4:
                 gui.scroll_win.scroll(-20) #If mousewheel up, scroll the scroller
             elif event.button == 5:
@@ -49,8 +52,8 @@ while run: #The loop that runs constantly
                 newBlock.clicked = True
                 gui.is_draging = True
     gui.update_dragged_position() #Updating the position of dragged gui.blocks
-    gui.draw_screen() #Draw the screen
+    gui.draw_screen(redraw) #Draw the screen
     pygame.display.flip() #Refresh the display
-    clock.tick(30) #Limit framerate to 60
+    clock.tick(60) #Limit framerate to 60
 
 pygame.quit()#Quit the program

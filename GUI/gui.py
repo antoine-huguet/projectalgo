@@ -38,11 +38,11 @@ def writeAffection(line):
 def writePrint(line):
     global_printer.addLine(line,GUI.models.config.red)
 
-def draw_screen():
+def draw_screen(update):
     """Drawing all items in order (bg to fg)."""
     win.blit(bg,(0,0))
     scroll_win.draw(win)
-    drawer.draw(win)
+    drawer.draw(win,update)
     global_printer.draw(win)
     blocWriter.draw(win)
     for block in blocks:
@@ -56,7 +56,6 @@ def check_pick_up_in_scroller(scroller,pos):
     """Check if a block is being picked up in the given scroller."""
     for line in scroller.blocks:
         for block in line: #Looking at every blocks in the scroller
-            print(type(block))
             if block.rect.collidepoint(scroller.global_coord_to_local(pos)) and block.is_movable:
                 #If the mouse is over the block and the block is movable
                 block.clicked = True #The block is now being clicked on
@@ -83,7 +82,9 @@ def check_pick_up_in_drawer(scroller,pos):
             # Removing the block from the scroller and adding it to the main window
             block.write_pos(add_tuple(scroller.local_coord_to_global(pos),(block.width//2,block.height//2)))
             #Updating the block coordinates to account for the changing frame of reference
-
+            return True
+        
+    return False
 def check_drop_down_in_scroller(scroller,pos):
     """Check if a block is being dropped down in a scroller."""
     global is_draging
