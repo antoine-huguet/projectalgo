@@ -5,9 +5,9 @@ class Bloc:
         
     def __init__(self,id,prefix=None,suffix=None,condition=None,args=(None,None)):
         self.id=id
-        self.tab=cfg.tabs[min(id,5)]
+        self.tab=cfg.tabs[min(id,6)]
         self.prefix=cfg.prefixes[id]
-        self.suffix=cfg.suffixes[min(id,5)]
+        self.suffix=cfg.suffixes[min(id,6)]
         if self.id==2:
             self.suffix=str(args[1])+')'
         self.condition=condition

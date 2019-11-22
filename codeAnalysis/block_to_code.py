@@ -17,33 +17,39 @@ def code_executable(blocklist):
     return(''.join(code))
 
 def code_utilisateur(blocklist):
-    code=['from time import sleep\n']
+    code=["import codeAnalysis.block_to_code as btc\n"]
+    L=[]
     t=0
     for row in blocklist:
+        code.append(t*'\t')
         for bloc in row:
-            code.append(t*'\t')
             code.append(bloc.prefix)
             if bloc.args[1]!=None:
                 code.append(bloc.args[1].python())
-            if bloc.condition !=None:    
+            if bloc.condition !=None:
                 code.append(bloc.condition.python())
             code.append(bloc.suffix)
             #transcription d'une ligne dans l'ordre préfixe::condition::argument::suffixe
-            t=t+bloc.tab
             if bloc.id==3 or bloc.id==2:
-                code.append('\n sleep(.2) \n display(bloc.args)')
+                L.append(bloc.args)
+                code.append('\n')
+                code.append(t*'\t')
+                code.append('btc.display([')
+                if bloc.args[0]!=None:
+                    code.append((bloc.args[0]).prefix)
+                code.append(',')
+                code.append((bloc.args[1]).python())
+                code.append('])')
+            t=t+bloc.tab
             #mise à jour de la liste des affectations et prints, pause et affichage
         code.append('\n')
-    return(''.join(code))
+    return(''.join(code),L)
 
 def display(args):
     if args[0]==None:
         gui.writePrint(args[1])
     else:
-        if args[1].uses_variables:
-            string= str(args[0])+'='+args[1].text +'=' +str(args[1].evaluate())
-        else:
-            string= str(args[0])+'='+args[1].text
+        string= str(args[0])+'='+args[1].python()
         gui.writeAffection(string)
 
 def graphic_to_model(blocklist):
