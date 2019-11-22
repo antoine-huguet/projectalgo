@@ -1,3 +1,6 @@
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v1.4%20adopted-ff69b4.svg)](code-of-conduct.md)
+[![Pull Requests Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat)](http://makeapullrequest.com)
+
 # Algorithmic project
 
 ## What is it ?
@@ -13,6 +16,9 @@ We are :
 - [Antoine HUGUET](https://github.com/antoine-huguet)
 - [Rémi HEITZ](https://github.com/remiUP)
 - [Youssef IRHBOULA](https://github.com/yoyotir)
+
+Supervised by: 
+[Pascual Romain](https://github.com/romainpascual
 
 ## What will happend next ?
 
